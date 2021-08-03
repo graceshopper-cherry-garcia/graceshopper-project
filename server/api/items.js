@@ -13,4 +13,14 @@ router.get('/', async (req, res, next) => {
   }
 });
 
+// GET /api/items/:id return a single item
+router.get('/:id', async (req, res, next) => {
+  try {
+    const item = await Item.findByPk(req.params.id);
+    res.json(item);
+  } catch (err) {
+    next(err);
+  }
+});
+
 module.exports = router;
