@@ -15,7 +15,9 @@ export class AllItems extends React.Component {
   render() {
     return (
       <div>
-        <ListSingleItem />
+        {this.props.items.map((item) => {
+          return <ListSingleItem key={item.id} item={item} />;
+        })}
       </div>
     );
   }
