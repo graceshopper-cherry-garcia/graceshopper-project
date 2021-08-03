@@ -28,6 +28,7 @@ class SingleItem extends React.Component {
   }
 
   render() {
+    console.log(this.props.user)
     const item = this.props.item;
     const selectorArray = Array.from(Array(99).keys());
 
@@ -58,6 +59,11 @@ class SingleItem extends React.Component {
 
           <p>{item.description}</p>
         </div>
+        {this.props.user.isAdmin &&
+        <div>
+          <button type='button'>Edit</button>
+          <button type='button'>Delete</button>
+        </div>}
       </div>
     );
   }
@@ -66,6 +72,7 @@ class SingleItem extends React.Component {
 const mapState = (state) => {
   return {
     item: state.singleItem,
+    user: state.auth
   };
 };
 
