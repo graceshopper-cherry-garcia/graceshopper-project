@@ -1,5 +1,6 @@
 import React from "react";
 import { connect } from "react-redux";
+import { Link } from "react-router-dom";
 import { fetchItem } from "../store/singleItem";
 
 export class SingleItem extends React.Component {
@@ -13,13 +14,11 @@ export class SingleItem extends React.Component {
   }
 
   componentDidMount() {
-    console.log(this.props)
     this.props.fetchItem(this.props.match.params.id);
   }
 
   handleSubmit(event) {
     event.preventDefault();
-    console.log(this.state);
   }
 
   handleChange(evt) {
@@ -29,7 +28,6 @@ export class SingleItem extends React.Component {
   }
 
   render() {
-    console.log(this.props.user)
     const item = this.props.item;
     const selectorArray = Array.from(Array(99).keys());
 
@@ -62,7 +60,9 @@ export class SingleItem extends React.Component {
         </div>
         {this.props.user.isAdmin &&
         <div className='admin-buttons'>
-          <button type='button'>Edit</button>
+          <Link to={`/items/edit/${this.props.item.id}`}>
+            <button type='button'>Edit</button>
+          </Link>
           <button type='button'>Delete</button>
         </div>}
       </div>

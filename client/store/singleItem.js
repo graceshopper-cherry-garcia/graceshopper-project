@@ -37,18 +37,17 @@ export const fetchItem = (itemId) => {
   }
 };
 
-export const updateItemThunk = (itemId) => {
+export const updateItemThunk = (item, history) => {
   return async (dispatch) => {
     try {
-      const { data } = await axios.put(`/api/items/${itemId}`);
+      const { data } = await axios.put(`/api/items/${item.id}`, item);
       dispatch(updateItem(data));
+      history.push(`/items/${item.id}`)
     } catch (error) {
       console.error(error)
     }
   }
 };
-
-
 
 // reducer
 
