@@ -96,6 +96,12 @@ async function seed() {
     console.log(`seeded ${items.length} items`);
     console.log(`seeded ${orders.length} orders`);
     console.log(`seeded successfully`);
+    return {
+      users: {
+        cody: users[0],
+        murphy: users[1]
+      }
+    }
   } catch (e) {
     console.log(e.message);
   }
