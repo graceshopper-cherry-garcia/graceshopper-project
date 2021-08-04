@@ -1,6 +1,6 @@
 import React from 'react';
-import { addItem } from '../store/allitems';
-import {connect} from 'react-redux'
+import { addItem } from '../store/allItems';
+import { connect } from 'react-redux';
 
 export class AddItemForm extends React.Component {
   constructor(props) {
@@ -21,24 +21,25 @@ export class AddItemForm extends React.Component {
     });
   }
 
-  handleSubmit(event){
-    event.preventDefault()
-    this.props.create({...this.state})
-    this.props.history.push('/home')
+  handleSubmit(event) {
+    event.preventDefault();
+    this.props.create({ ...this.state });
+    this.props.history.push('/home');
   }
 
   render() {
+    console.log(this.props);
     const { handleChange, handleSubmit } = this;
     return (
       <div className="form_container" onSubmit={handleSubmit}>
         <form>
-          <label htmlFor="name field">Name:  </label>
+          <label htmlFor="name field">Name: </label>
           <input
             type="text"
             name="name"
             value={this.state.name}
             onChange={handleChange}
-            placeholder={!this.state.name&&'required field'}
+            placeholder={!this.state.name && 'required field'}
           />
 
           <label htmlFor="image field">Image URL: </label>
@@ -54,7 +55,7 @@ export class AddItemForm extends React.Component {
             name="price"
             value={this.state.price}
             onChange={handleChange}
-            placeholder={this.state.price<=0&&'must be greater than 0'}
+            placeholder={this.state.price <= 0 && 'must be greater than 0'}
           />
           <label htmlFor="description field">Description: </label>
           <input
@@ -64,17 +65,27 @@ export class AddItemForm extends React.Component {
             onChange={handleChange}
           />
 
-          <button type="submit" disabled={!this.state.name&&this.state.price>0}>Add Item</button>
+          <button
+            type="submit"
+            disabled={!this.state.name && this.state.price > 0}
+          >
+            Add Item
+          </button>
         </form>
       </div>
     );
   }
 }
 
+// eslint-disable-next-line no-unused-vars
+const mapState = (state) => {
+  return {};
+};
+
 const mapDispatch = (dispatch) => {
   return {
-    create: (item) => dispatch(addItem(item))
-  }
-}
+    create: (item) => dispatch(addItem(item)),
+  };
+};
 
-export default connect(null, mapDispatch)(AddItemForm)
+export default connect(mapState, mapDispatch)(AddItemForm);

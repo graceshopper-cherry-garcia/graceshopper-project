@@ -5,7 +5,7 @@ import { Login, Signup } from './components/AuthForm';
 import Home from './components/Home';
 import { me } from './store';
 import SingleItem from './components/SingleItem';
-import { AddItemForm } from './components/AddItemForm';
+import AddItemForm from './components/AddItemForm';
 
 /**
  * COMPONENT
