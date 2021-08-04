@@ -23,4 +23,16 @@ router.get('/:id', async (req, res, next) => {
   }
 });
 
+
+// PUT /api/items/:id return updated item
+router.put('/:id', async (req, res, next) => {
+  try {
+    const item = await Item.findByPk(req.params.id);
+    await item.update(req.body);
+    res.json(item)
+  } catch (error) {
+    next(error);
+  }
+});
+
 module.exports = router;

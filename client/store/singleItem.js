@@ -3,6 +3,7 @@ import axios from 'axios';
 //action consts
 
 const SET_ITEM = 'SET_ITEM';
+const UPDATE_ITEM = 'UPDATE_ITEM';
 
 // action creators
 
@@ -10,6 +11,15 @@ const SET_ITEM = 'SET_ITEM';
 export const setItem = (item) => {
   return {
     type: SET_ITEM,
+    item,
+  };
+};
+
+
+
+export const updateItem = (item) => {
+  return {
+    type: UPDATE_ITEM,
     item,
   };
 };
@@ -27,11 +37,26 @@ export const fetchItem = (itemId) => {
   }
 };
 
+export const updateItemThunk = (itemId) => {
+  return async (dispatch) => {
+    try {
+      const { data } = await axios.put(`/api/items/${itemId}`);
+      dispatch(updateItem(data));
+    } catch (error) {
+      console.error(error)
+    }
+  }
+};
+
+
+
 // reducer
 
 export default function singleItemReducer(state = {}, action) {
   switch (action.type) {
     case SET_ITEM:
+      return action.item;
+    case UPDATE_ITEM:
       return action.item;
     default:
       return state
