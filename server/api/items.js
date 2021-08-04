@@ -23,4 +23,13 @@ router.get('/:id', async (req, res, next) => {
   }
 });
 
+// POST /api/items/ add a single item
+router.post('/', async (req, res, next) => {
+  try {
+    const item = await Item.create(req.body)
+    res.status(201).send(item);
+  } catch(e) {
+    next(e);
+  }
+})
 module.exports = router;
