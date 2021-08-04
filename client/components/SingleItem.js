@@ -2,7 +2,7 @@ import React from "react";
 import { connect } from "react-redux";
 import { fetchItem } from "../store/singleItem";
 
-class SingleItem extends React.Component {
+export class SingleItem extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
@@ -13,6 +13,7 @@ class SingleItem extends React.Component {
   }
 
   componentDidMount() {
+    console.log(this.props)
     this.props.fetchItem(this.props.match.params.id);
   }
 
@@ -60,7 +61,7 @@ class SingleItem extends React.Component {
           <p>{item.description}</p>
         </div>
         {this.props.user.isAdmin &&
-        <div>
+        <div className='admin-buttons'>
           <button type='button'>Edit</button>
           <button type='button'>Delete</button>
         </div>}
