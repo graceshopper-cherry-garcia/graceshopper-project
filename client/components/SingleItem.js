@@ -37,7 +37,7 @@ export class SingleItem extends React.Component {
         <div className="single-item-info">
           <h1>{item.name}</h1>
           <span className="add-to-cart">
-            <p>{item.price}</p>
+            <p>${item.price}</p>
             <form onSubmit={this.handleSubmit}>
               <select
                 type="select"
