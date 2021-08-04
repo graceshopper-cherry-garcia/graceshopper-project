@@ -6,6 +6,8 @@ import Home from './components/Home';
 import { me } from './store';
 import SingleItem from './components/SingleItem';
 import AddItemForm from './components/AddItemForm';
+import EditItem from './components/EditItem';
+
 
 /**
  * COMPONENT
@@ -22,8 +24,12 @@ class Routes extends Component {
       <div>
         {isLoggedIn ? (
           <Switch>
+
             <Route exact path="/addItem" component={AddItemForm} />
-            <Route path="/items/:id" component={SingleItem} />
+
+              <Route path='/items/edit/:id' component={EditItem} />
+             <Route path='/items/:id' component={SingleItem} />
+
             <Route path="/home" component={Home} />
             <Redirect to="/home" />
           </Switch>

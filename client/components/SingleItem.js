@@ -1,6 +1,7 @@
 import React from "react";
 import { connect } from "react-redux";
-import { fetchItem } from "../store/singleItem";
+import { Link } from "react-router-dom";
+import { fetchItem, deleteItemThunk } from "../store/singleItem";
 
 export class SingleItem extends React.Component {
   constructor(props) {
@@ -13,13 +14,11 @@ export class SingleItem extends React.Component {
   }
 
   componentDidMount() {
-    console.log(this.props)
     this.props.fetchItem(this.props.match.params.id);
   }
 
   handleSubmit(event) {
     event.preventDefault();
-    console.log(this.state);
   }
 
   handleChange(evt) {
@@ -29,7 +28,6 @@ export class SingleItem extends React.Component {
   }
 
   render() {
-    console.log(this.props.user)
     const item = this.props.item;
     const selectorArray = Array.from(Array(99).keys());
 
@@ -39,7 +37,7 @@ export class SingleItem extends React.Component {
         <div className="single-item-info">
           <h1>{item.name}</h1>
           <span className="add-to-cart">
-            <p>{item.price}</p>
+            <p>${item.price}</p>
             <form onSubmit={this.handleSubmit}>
               <select
                 type="select"
@@ -62,8 +60,10 @@ export class SingleItem extends React.Component {
         </div>
         {this.props.user.isAdmin &&
         <div className='admin-buttons'>
-          <button type='button'>Edit</button>
-          <button type='button'>Delete</button>
+          <Link to={`/items/edit/${this.props.item.id}`}>
+            <button type='button'>Edit</button>
+          </Link>
+          <button onClick={() => this.props.deleteItem(item)} type='button'>Delete</button>
         </div>}
       </div>
     );
@@ -77,9 +77,10 @@ const mapState = (state) => {
   };
 };
 
-const mapDispatch = (dispatch) => {
+const mapDispatch = (dispatch, { history }) => {
   return {
     fetchItem: (id) => dispatch(fetchItem(id)),
+    deleteItem: (item) => dispatch(deleteItemThunk(item, history))
   };
 };
 
