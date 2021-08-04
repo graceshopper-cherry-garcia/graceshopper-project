@@ -1,6 +1,6 @@
 import React from 'react';
 import ListSingleItem from './ListSingleItem';
-import { fetchItems } from '../store/allitems';
+import { fetchItems } from '../store/allItems';
 import { connect } from 'react-redux';
 
 export class AllItems extends React.Component {
