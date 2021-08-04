@@ -11,13 +11,16 @@ enzyme.configure({adapter})
 
 describe('Single Item', () => {
   let singleItem
+  let singleItemNoButtons
   let propsItem = {id: 2, name: 'Queen cup', description: 'A cup fit for a queen', imageUrl: 'https://render.fineartamerica.com/images/rendered/default/frontright/mug/images/artworkimages/medium/2/queen-we-will-rock-you-gina-dsgn.jpg?&targetx=233&targety=0&imagewidth=333&imageheight=333&modelwidth=800&modelheight=333&backgroundcolor=FBFBFD&orientation=0&producttype=coffeemug-11', price: 12.45}
   let propsUser = {username: 'cody', email:'cody@cody.com', password: '1234', isAdmin: true}
+  let notAdminUser = {username: 'lucy', email:'lucy@cody.com', password: '1234', isAdmin: false}
   const fetchItem = (id) => {
     return propsItem
   }
   beforeEach(() => {
     singleItem = shallow(<SingleItem item={propsItem} user={propsUser} match={{params: {id: propsItem.id}}} fetchItem={fetchItem} />)
+    singleItemNoButtons = shallow(<SingleItem item={propsItem} user={notAdminUser} match={{params: {id: propsItem.id}}} fetchItem={fetchItem} />)
   })
 
   it('render item name in h1', () => {
@@ -31,5 +34,8 @@ describe('Single Item', () => {
   })
   it('If user is admin, edit and delete buttons appear', () => {
     expect(singleItem.find('div.admin-buttons').children()).to.have.lengthOf(2)
+  })
+  it('If user is not admin, edit and delete buttons disappear', () => {
+    expect(singleItemNoButtons.find('div.admin-buttons').children()).to.have.lengthOf(0)
   })
 })
