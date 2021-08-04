@@ -1,7 +1,7 @@
 import React from "react";
 import { connect } from "react-redux";
 import { Link } from "react-router-dom";
-import { fetchItem } from "../store/singleItem";
+import { fetchItem, deleteItemThunk } from "../store/singleItem";
 
 export class SingleItem extends React.Component {
   constructor(props) {
@@ -63,7 +63,7 @@ export class SingleItem extends React.Component {
           <Link to={`/items/edit/${this.props.item.id}`}>
             <button type='button'>Edit</button>
           </Link>
-          <button type='button'>Delete</button>
+          <button onClick={() => this.props.deleteItem(item)} type='button'>Delete</button>
         </div>}
       </div>
     );
@@ -77,9 +77,10 @@ const mapState = (state) => {
   };
 };
 
-const mapDispatch = (dispatch) => {
+const mapDispatch = (dispatch, { history }) => {
   return {
     fetchItem: (id) => dispatch(fetchItem(id)),
+    deleteItem: (item) => dispatch(deleteItemThunk(item, history))
   };
 };
 
