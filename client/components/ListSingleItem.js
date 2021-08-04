@@ -12,7 +12,7 @@ export default class ListSingleItem extends React.Component {
         <ul>
           <img src={item.imageUrl} />
           <li>{item.name}</li> {/* Area for Item Name*/}
-          <li>{`$ ${item.price.toFixed(2)}`}</li>
+          <li>{`$${item.price.toFixed(2)}`}</li>
           {/* Area for Item Price*/}
           <li>{item.description}</li> {/* Area for Item Description*/}
         </ul>
