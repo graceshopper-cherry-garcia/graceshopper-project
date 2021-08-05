@@ -1,7 +1,7 @@
-import React from "react";
-import { connect } from "react-redux";
-import { Link } from "react-router-dom";
-import { fetchItem, deleteItemThunk } from "../store/singleItem";
+import React from 'react';
+import { connect } from 'react-redux';
+import { Link } from 'react-router-dom';
+import { fetchItem, deleteItemThunk } from '../store/singleItem';
 
 export class SingleItem extends React.Component {
   constructor(props) {
@@ -46,7 +46,7 @@ export class SingleItem extends React.Component {
 
     return (
       <div className="single-item-container">
-        <img src={item.imageUrl} />
+        <img width="200px" src={item.imageUrl} />
         <div className="single-item-info">
           <h1>{item.name}</h1>
           <span className="add-to-cart">
