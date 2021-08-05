@@ -2,7 +2,7 @@
 
 const {
   db,
-  models: { User, Item, Order },
+  models: { User, Item, Order_Item, Order },
 } = require('../server/db');
 
 /**
@@ -43,7 +43,7 @@ for (let x = 0; x < bands.length; x++) {
 }
 
 const generatePrice = () => {
-  return parseFloat((Math.random() * 100).toFixed(2));
+  return parseInt((Math.random() * 10000), 10);
 };
 
 async function seed() {
@@ -57,6 +57,7 @@ async function seed() {
         username: 'cody',
         email: 'cody@cody.com',
         password: '123',
+        isAdmin: true
       }),
       User.create({
         username: 'murphy',
@@ -72,24 +73,37 @@ async function seed() {
       })
     );
 
+    //Create Order
+    await Order.create({
+      userId: 1
+    })
+
+    await Order_Item.create({
+      quantity: 4,
+      purchasePrice: 1234,
+      itemId: 2,
+      orderId: 1
+    })
+    console.log(Order.prototype)
+
     //Create Orders
-    const orders = await Promise.all([
-      Order.create({
-        quantity: 3,
-      }),
-      Order.create({
-        quantity: 4,
-      }),
-      Order.create({
-        quantity: 5,
-      }),
-    ]);
+    // const orders = await Promise.all([
+    //   Order.create({
+    //     quantity: 3,
+    //   }),
+    //   Order.create({
+    //     quantity: 4,
+    //   }),
+    //   Order.create({
+    //     quantity: 5,
+    //   }),
+    // ]);
 
     //Create associations
-    await orders[0].setUser(1);
-    await orders[1].setUser(1);
-    await orders[0].setItem(await Item.findByPk(3));
-    await orders[1].setItem(await Item.findByPk(10));
+    // await orders[0].setUser(1);
+    // await orders[1].setUser(1);
+    // await orders[0].setItem(await Item.findByPk(3));
+    // await orders[1].setItem(await Item.findByPk(10));
 
     //send information
     console.log(`seeded ${users.length} users`);
