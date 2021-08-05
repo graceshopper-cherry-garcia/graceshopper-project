@@ -2,12 +2,13 @@ import React from 'react';
 import { connect } from 'react-redux';
 import { Link } from 'react-router-dom';
 import { fetchItem, deleteItemThunk } from '../store/singleItem';
+import { addOrderItem } from '../store/orderItem';
 
 export class SingleItem extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      quantity: 0,
+      quantity: 1,
     };
     this.handleSubmit = this.handleSubmit.bind(this);
     this.handleChange = this.handleChange.bind(this);
@@ -21,6 +22,12 @@ export class SingleItem extends React.Component {
   handleSubmit(event) {
     console.log(this.state.quantity);
     event.preventDefault();
+    this.props.addToCart({
+      quantity: this.state.quantity,
+      purchasePrice: this.props.item.price,
+      itemId: this.props.item.id,
+      user: this.props.user,
+    });
   }
 
   handleChange(evt) {
@@ -97,6 +104,7 @@ const mapDispatch = (dispatch, { history }) => {
   return {
     fetchItem: (id) => dispatch(fetchItem(id)),
     deleteItem: (item) => dispatch(deleteItemThunk(item, history)),
+    addToCart: (orderItem) => dispatch(addOrderItem(orderItem)),
   };
 };
 
