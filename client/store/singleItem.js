@@ -38,6 +38,10 @@ export const fetchItem = (itemId) => {
   return async (dispatch) => {
     try {
       const { data } = await axios.get(`/api/items/${itemId}`);
+      // let newData = {
+      //   ...data,
+      //   data.price = data.price / 100
+      // }
       dispatch(setItem(data));
     } catch (error) {
       console.error(error)
@@ -49,7 +53,9 @@ export const updateItemThunk = (item, history) => {
   return async (dispatch) => {
     try {
       const { data } = await axios.put(`/api/items/${item.id}`, item);
+
       dispatch(updateItem(data));
+
       history.push(`/items/${item.id}`)
     } catch (error) {
       console.error(error)

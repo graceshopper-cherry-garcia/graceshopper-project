@@ -7,37 +7,52 @@ export class EditItem extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      item: this.props.item,
+      id: '',
+      name: '',
+      price: '',
+      description: '',
+      imageUrl: ''
     };
   this.handleChange = this.handleChange.bind(this);
   this.handleSubmit = this.handleSubmit.bind(this);
   }
 
-  componentDidMount() {
-    this.props.fetchItem(this.props.match.params.id);
+ async componentDidMount() {
+    await this.props.fetchItem(this.props.match.params.id);
+    this.setState({
+      id: this.props.item.id,
+      name: this.props.item.name,
+      price: this.props.item.price / 100,
+      description: this.props.item.description,
+      imageUrl: this.props.item.imageUrl
+    })
   }
 
-  componentDidUpdate(prevProps) {
-    if (prevProps.item !== this.props.item) {
+  componentDidUpdate(prevProps, prevState) {
+    if (prevState.id !== this.state.id) {
       this.setState({
-        item: this.props.item,
+        id: this.state.id,
+        name: this.state.name,
+        price: this.state.price,
+        description: this.state.description,
+        imageUrl: this.state.imageUrl
       });
     }
   }
 
   handleChange(evt) {
     this.setState({
-      item: { ...this.state.item, [evt.target.name]: evt.target.value },
+      ...this.state,
+      [evt.target.name]: evt.target.value
     });
   }
 
     handleSubmit(evt) {
     evt.preventDefault();
-    this.props.updateItem(this.state.item);
+    this.props.updateItem(this.state);
   }
 
   render() {
-    // console.log(this.state.item)
     return (
     <div className='form-container'>
       <form onSubmit={this.handleSubmit}>
@@ -45,7 +60,7 @@ export class EditItem extends React.Component {
           <label htmlFor='name'>Name</label>
           <input
           name='name'
-          value={this.state.item.name}
+          value={this.state.name}
           onChange={this.handleChange}
           />
         </div>
@@ -54,7 +69,7 @@ export class EditItem extends React.Component {
           <label htmlFor='description'>Description</label>
           <input
           name='description'
-          value={this.state.item.description}
+          value={this.state.description}
           onChange={this.handleChange}
           />
         </div>
@@ -63,7 +78,7 @@ export class EditItem extends React.Component {
           <label htmlFor='price'>Price</label>
           <input
           name='price'
-          value={this.state.item.price}
+          value={this.state.price}
           onChange={this.handleChange}
           />
         </div>
@@ -72,7 +87,7 @@ export class EditItem extends React.Component {
           <label htmlFor='imageUrl'>Image</label>
           <input
           name='imageUrl'
-          value={this.state.item.imageUrl}
+          value={this.state.imageUrl}
           onChange={this.handleChange}
           />
         </div>
@@ -86,14 +101,19 @@ export class EditItem extends React.Component {
 const mapState = (state) => {
   return {
     item: state.singleItem,
-    // user: state.auth
   };
 };
 
 const mapDispatch = (dispatch, { history }) => {
   return {
     fetchItem: (id) => dispatch(fetchItem(id)),
-    updateItem: (item) => dispatch(updateItemThunk(item, history))
+    updateItem: (inputItem) => {
+      let item = {
+        ...inputItem,
+        price: parseInt(inputItem.price * 100, 10)
+      }
+      dispatch(updateItemThunk(item, history))
+    }
   };
 };
 

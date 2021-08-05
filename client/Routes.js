@@ -27,7 +27,7 @@ class Routes extends Component {
 
             <Route exact path="/addItem" component={AddItemForm} />
 
-              <Route path='/items/edit/:id' component={EditItem} />
+            <Route path='/editItem/:id' component={EditItem} />
              <Route path='/items/:id' component={SingleItem} />
 
             <Route path="/home" component={Home} />
