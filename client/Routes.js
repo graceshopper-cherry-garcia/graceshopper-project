@@ -8,7 +8,6 @@ import SingleItem from './components/SingleItem';
 import AddItemForm from './components/AddItemForm';
 import EditItem from './components/EditItem';
 
-
 /**
  * COMPONENT
  */
@@ -24,18 +23,17 @@ class Routes extends Component {
       <div>
         {isLoggedIn ? (
           <Switch>
-
             <Route exact path="/addItem" component={AddItemForm} />
 
-            <Route path='/editItem/:id' component={EditItem} />
-             <Route path='/items/:id' component={SingleItem} />
+            <Route path="/editItem/:id" component={EditItem} />
+            <Route path="/items/:id" component={SingleItem} />
 
             <Route path="/home" component={Home} />
             <Redirect to="/home" />
           </Switch>
         ) : (
           <Switch>
-            <Route path="/" exact component={Login} />
+            <Route exact path="/" component={Home} />
             <Route path="/login" component={Login} />
             <Route path="/signup" component={Signup} />
             <Route path="/items/:id" component={SingleItem} />

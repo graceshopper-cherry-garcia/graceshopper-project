@@ -43,7 +43,7 @@ for (let x = 0; x < bands.length; x++) {
 }
 
 const generatePrice = () => {
-  return parseInt((Math.random() * 10000), 10);
+  return parseInt(Math.random() * 10000, 10);
 };
 
 async function seed() {
@@ -57,7 +57,7 @@ async function seed() {
         username: 'cody',
         email: 'cody@cody.com',
         password: '123',
-        isAdmin: true
+        isAdmin: true,
       }),
       User.create({
         username: 'murphy',
@@ -75,16 +75,16 @@ async function seed() {
 
     //Create Order
     await Order.create({
-      userId: 1
-    })
+      userId: 1,
+    });
 
     await Order_Item.create({
       quantity: 4,
       purchasePrice: 1234,
       itemId: 2,
-      orderId: 1
-    })
-    console.log(Order.prototype)
+      orderId: 1,
+    });
+    console.log(Order.prototype);
 
     //Create Orders
     // const orders = await Promise.all([
@@ -113,9 +113,9 @@ async function seed() {
     return {
       users: {
         cody: users[0],
-        murphy: users[1]
-      }
-    }
+        murphy: users[1],
+      },
+    };
   } catch (e) {
     console.log(e.message);
   }
