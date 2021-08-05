@@ -13,7 +13,7 @@ const Item = db.define('item', {
     type: Sequelize.TEXT,
   },
   price: {
-    type: Sequelize.FLOAT,
+    type: Sequelize.INTEGER,
     allowNull: false,
     validate: {
       min: 0,
@@ -23,6 +23,10 @@ const Item = db.define('item', {
     type: Sequelize.TEXT,
     defaultValue: '',
   },
+  stock: {
+    type: Sequelize.INTEGER,
+    defaultValue: 1000
+  }
 });
 
 module.exports = Item;
