@@ -11,6 +11,7 @@ export class SingleItem extends React.Component {
     };
     this.handleSubmit = this.handleSubmit.bind(this);
     this.handleChange = this.handleChange.bind(this);
+    this.selectorArray = this.selectorArray.bind(this);
   }
 
   componentDidMount() {
@@ -18,6 +19,7 @@ export class SingleItem extends React.Component {
   }
 
   handleSubmit(event) {
+    console.log(this.state.quantity);
     event.preventDefault();
   }
 
@@ -27,9 +29,20 @@ export class SingleItem extends React.Component {
     });
   }
 
+  selectorArray() {
+    let limit = 30;
+    if (this.props.item.stock < 30) {
+      limit = this.props.item.stock;
+    }
+    let array = [];
+    for (let i = 0; i < limit; i++) {
+      array.push(i);
+    }
+    return array;
+  }
+
   render() {
     const item = this.props.item;
-    const selectorArray = Array.from(Array(99).keys());
 
     return (
       <div className="single-item-container">
@@ -37,14 +50,14 @@ export class SingleItem extends React.Component {
         <div className="single-item-info">
           <h1>{item.name}</h1>
           <span className="add-to-cart">
-            <p>${item.price}</p>
+            <p>${item.price / 100}</p>
             <form onSubmit={this.handleSubmit}>
               <select
                 type="select"
                 name="quantity"
                 onChange={this.handleChange}
               >
-                {selectorArray.map((num) => {
+                {this.selectorArray().map((num) => {
                   return (
                     <option key={num} value={num + 1}>
                       {num + 1}
@@ -58,13 +71,16 @@ export class SingleItem extends React.Component {
 
           <p>{item.description}</p>
         </div>
-        {this.props.user.isAdmin &&
-        <div className='admin-buttons'>
-          <Link to={`/items/edit/${this.props.item.id}`}>
-            <button type='button'>Edit</button>
-          </Link>
-          <button onClick={() => this.props.deleteItem(item)} type='button'>Delete</button>
-        </div>}
+        {this.props.user.isAdmin && (
+          <div className="admin-buttons">
+            <Link to={`/editItem/${this.props.item.id}`}>
+              <button type="button">Edit</button>
+            </Link>
+            <button onClick={() => this.props.deleteItem(item)} type="button">
+              Delete
+            </button>
+          </div>
+        )}
       </div>
     );
   }
@@ -73,14 +89,14 @@ export class SingleItem extends React.Component {
 const mapState = (state) => {
   return {
     item: state.singleItem,
-    user: state.auth
+    user: state.auth,
   };
 };
 
 const mapDispatch = (dispatch, { history }) => {
   return {
     fetchItem: (id) => dispatch(fetchItem(id)),
-    deleteItem: (item) => dispatch(deleteItemThunk(item, history))
+    deleteItem: (item) => dispatch(deleteItemThunk(item, history)),
   };
 };
 
