@@ -16,6 +16,8 @@ const User = db.define('user', {
     type: Sequelize.STRING,
     allowNull: false,
     unique: true,
+    //temporary TO BE REMOVED!
+    defaultValue: 'test@test.com',
     validate: {
       isEmail: true,
     },
@@ -25,7 +27,8 @@ const User = db.define('user', {
   },
   isAdmin: {
     type: Sequelize.BOOLEAN,
-    defaultValue: false,
+    //temporary TO BE UPDATED TO FALSE
+    defaultValue: true,
   },
 });
 
