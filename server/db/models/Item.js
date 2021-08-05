@@ -11,6 +11,7 @@ const Item = db.define('item', {
   },
   description: {
     type: Sequelize.TEXT,
+    defaultValue: 'Description Incoming'
   },
   price: {
     type: Sequelize.INTEGER,
@@ -21,7 +22,7 @@ const Item = db.define('item', {
   },
   imageUrl: {
     type: Sequelize.TEXT,
-    defaultValue: '',
+    defaultValue: 'https://nyvane.com/wp-content/uploads/2020/06/mug2Cstandard2Cx10002Ccenter-pad2C750x10002Cf8f8f8-1034.jpg.webp',
   },
   stock: {
     type: Sequelize.INTEGER,
