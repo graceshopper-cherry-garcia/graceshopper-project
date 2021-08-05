@@ -6,16 +6,7 @@ const {
 // POST /api/orderItem create an orderItem
 router.post('/', async (req, res, next) => {
   try {
-    const orderItem = await Order_Item.create(
-      // quantity: req.body.quantity,
-      // purchasePrice: req.body.purchasePrice,
-      // orderId: req.body.orderId,
-      // itemId: req.body.itemId,
-      req.body
-    );
-    // const order = await Order.findByPk(req.body.orderId);
-    // await order.addItems(await Item.findByPk(req.body.itemId));
-    // console.log(orderItem);
+    const orderItem = await Order_Item.create(req.body);
     res.send(orderItem);
   } catch (e) {
     next(e);
