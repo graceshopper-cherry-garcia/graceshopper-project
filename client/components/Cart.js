@@ -1,18 +1,46 @@
 import React from 'react';
 import { fetchOrder } from '../store/order'
-import { fetchCartItems } from '../store/cartOrderItems'
+import { fetchOrderItems } from '../store/cartOrderItems'
 import { connect } from 'react-redux'
 
 class Cart extends React.Component {
-  async componentDidMount(){
-    await this.props.getCart(this.props.user.id)
-    this.props.getCartItems(this.props.cart.id)
+  constructor(){
+    super()
+    this.concatItems = this.concatItems.bind(this)
   }
+
+  async componentDidMount(){
+    await this.props.getOrder(this.props.user.id)
+    this.props.getOrderItems(this.props.order.id)
+  }
+
+  concatItems(items, order_items){
+    return items.map((item) => {
+      for (let i = 0; i < order_items.length; i++) {
+        if (order_items[i].itemId === item.id) {
+          return {...item, quantity: order_items[i].quantity}
+        }
+      }
+
+    })
+  }
+
   render(){
     console.log("props", this.props)
+    const order_items = this.props.orderItems || []
+    const items = this.props.order.items || []
+    const updatedOrderItems = this.concatItems(items, order_items)
     return (
       <div>
-        In the Cart
+        {order_items.length === 0 && <div>Nothing in Cart</div>}
+        {updatedOrderItems[0] && updatedOrderItems.map((item) => {
+          return (
+            <div key={item.id}>
+              {item.quantity}
+            </div>
+            // <CartItem item={item} key={item.id}/>
+          )
+        })}
       </div>
     )
   }
@@ -21,16 +49,16 @@ class Cart extends React.Component {
 
 const mapState = (state) => {
   return {
-    cart: state.cart,
+    order: state.cart,
     user: state.auth,
-    cartItems: state.cartItems
+    orderItems: state.cartItems
   }
 }
 
 const mapDispatch = (dispatch) => {
   return {
-    getCart: (userId) => dispatch(fetchOrder(userId)),
-    getCartItems: (orderId) => dispatch(fetchCartItems(orderId))
+    getOrder: (userId) => dispatch(fetchOrder(userId)),
+    getOrderItems: (orderId) => dispatch(fetchOrderItems(orderId))
   }
 }
 

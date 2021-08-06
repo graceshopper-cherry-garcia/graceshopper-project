@@ -14,7 +14,7 @@ const cartItems = (cartItems) => {
 
 //Thunks
 
-export const fetchCartItems = (orderId) => {
+export const fetchOrderItems = (orderId) => {
   return async (dispatch) => {
     try {
       const { data } = await axios.get(`/api/orderItems/${orderId}`)
