@@ -6,8 +6,11 @@ import auth from './auth';
 import singleItem from './singleItem';
 import allItems from './allItems';
 import orderItem from './orderItem';
+import cart from './order'
+import cartItems from './cartOrderItems'
 
-const reducer = combineReducers({ auth, allItems, singleItem, orderItem });
+
+const reducer = combineReducers({ auth, allItems, singleItem, orderItem, cart, cartItems });
 const middleware = composeWithDevTools(
   applyMiddleware(thunkMiddleware, createLogger({ collapsed: true }))
 );

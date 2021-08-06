@@ -7,6 +7,7 @@ import { me } from './store';
 import SingleItem from './components/SingleItem';
 import AddItemForm from './components/AddItemForm';
 import EditItem from './components/EditItem';
+import Cart from './components/Cart'
 
 /**
  * COMPONENT
@@ -23,8 +24,8 @@ class Routes extends Component {
       <div>
         {isLoggedIn ? (
           <Switch>
+            <Route exact path="/cart" component={Cart} />
             <Route exact path="/addItem" component={AddItemForm} />
-
             <Route path="/editItem/:id" component={EditItem} />
             <Route path="/items/:id" component={SingleItem} />
 
