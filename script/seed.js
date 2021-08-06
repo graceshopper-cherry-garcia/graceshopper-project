@@ -84,7 +84,7 @@ async function seed() {
       itemId: 2,
       orderId: 1,
     });
-    console.log(Order.prototype);
+    // console.log(Order.prototype);
 
     //Create Orders
     // const orders = await Promise.all([
