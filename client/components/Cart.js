@@ -3,11 +3,15 @@ import { fetchOrder } from '../store/order';
 import { fetchOrderItems } from '../store/cartOrderItems';
 import { connect } from 'react-redux';
 import SingleCartItem from './SingleCartItem';
+import { deleteCartItemThunk } from "../store/cartOrderItems";
+
 
 class Cart extends React.Component {
   constructor() {
     super();
     this.concatItems = this.concatItems.bind(this);
+    this.handleDelete = this.handleDelete.bind(this);
+
   }
 
   async componentDidMount() {
@@ -25,17 +29,22 @@ class Cart extends React.Component {
     });
   }
 
+  handleDelete(event) {
+    this.props.deleteItem(event.target.value);
+    console.log(this.item)
+  }
+
   render() {
-    console.log('props', this.props);
+    // console.log('props', this.props);
     const order_items = this.props.orderItems || [];
     const items = this.props.order.items || [];
     const updatedOrderItems = this.concatItems(items, order_items);
     let orderTotal = 0;
     if (updatedOrderItems[0]) {
-      console.log('cart items is ', updatedOrderItems);
+      // console.log('cart items is ', updatedOrderItems);
       orderTotal = updatedOrderItems.reduce((total, item) => {
-        console.log('price is ', item.price / 100);
-        console.log('quantity is ', item.quantity);
+        // console.log('price is ', item.price / 100);
+        // console.log('quantity is ', item.quantity);
         return total + (item.price / 100) * item.quantity;
       }, 0);
     }
@@ -46,11 +55,7 @@ class Cart extends React.Component {
         {updatedOrderItems[0] &&
           updatedOrderItems.map((item) => {
             return (
-              // <div key={item.id}>
-              //   {item.quantity}
-              // </div>
-              // <CartItem item={item} key={item.id}/>
-              <SingleCartItem key={item.id} item={item} />
+              <SingleCartItem key={item.id} item={item} handleDelete={this.handleDelete} />
             );
           })}
         <h1>
@@ -73,6 +78,8 @@ const mapDispatch = (dispatch) => {
   return {
     getOrder: (userId) => dispatch(fetchOrder(userId)),
     getOrderItems: (orderId) => dispatch(fetchOrderItems(orderId)),
+    deleteItem: (itemId) => dispatch(deleteCartItemThunk(itemId))
+
   };
 };
 
