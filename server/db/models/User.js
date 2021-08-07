@@ -3,6 +3,7 @@ const db = require('../db');
 const jwt = require('jsonwebtoken');
 const bcrypt = require('bcrypt');
 const axios = require('axios');
+const Order = require('./Order');
 
 const SALT_ROUNDS = 5;
 
@@ -16,8 +17,6 @@ const User = db.define('user', {
     type: Sequelize.STRING,
     allowNull: false,
     unique: true,
-    //temporary TO BE REMOVED!
-    defaultValue: 'test@test.com',
     validate: {
       isEmail: true,
     },
@@ -87,3 +86,7 @@ const hashPassword = async (user) => {
 User.beforeCreate(hashPassword);
 User.beforeUpdate(hashPassword);
 User.beforeBulkCreate((users) => Promise.all(users.map(hashPassword)));
+User.afterCreate(async (user) => {
+  const order = await Order.create();
+  await order.setUser(user.id);
+});

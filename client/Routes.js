@@ -7,7 +7,7 @@ import { me } from './store';
 import SingleItem from './components/SingleItem';
 import AddItemForm from './components/AddItemForm';
 import EditItem from './components/EditItem';
-import Cart from './components/Cart'
+import Cart from './components/Cart';
 
 /**
  * COMPONENT
@@ -29,12 +29,13 @@ class Routes extends Component {
             <Route path="/editItem/:id" component={EditItem} />
             <Route path="/items/:id" component={SingleItem} />
 
-            <Route path="/home" component={Home} />
+            <Route exact path="/home" component={Home} />
             <Redirect to="/home" />
           </Switch>
         ) : (
           <Switch>
             <Route exact path="/" component={Home} />
+            <Route exact path="/home" component={Home} />
             <Route path="/login" component={Login} />
             <Route path="/signup" component={Signup} />
             <Route path="/items/:id" component={SingleItem} />
