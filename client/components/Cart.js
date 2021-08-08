@@ -3,16 +3,20 @@ import { fetchOrder } from '../store/order';
 import { fetchOrderItems } from '../store/cartOrderItems';
 import { connect } from 'react-redux';
 import SingleCartItem from './SingleCartItem';
+import { deleteOrderItem } from "../store/orderItem";
+
 
 class Cart extends React.Component {
-  constructor() {
-    super();
+  constructor(props) {
+    super(props);
     this.concatItems = this.concatItems.bind(this);
+    this.handleDelete = this.handleDelete.bind(this);
+
   }
 
   async componentDidMount() {
     await this.props.getOrder(this.props.user.id);
-    this.props.getOrderItems(this.props.order.id);
+    await this.props.getOrderItems(this.props.order.id);
   }
 
   concatItems(items, order_items) {
@@ -25,17 +29,20 @@ class Cart extends React.Component {
     });
   }
 
+  async handleDelete(event) {
+    await this.props.deleteItem(event.target.value);
+    await this.props.getOrder(this.props.user.id);
+    await this.props.getOrderItems(this.props.order.id);
+
+  }
+
   render() {
-    console.log('props', this.props);
     const order_items = this.props.orderItems || [];
     const items = this.props.order.items || [];
     const updatedOrderItems = this.concatItems(items, order_items);
     let orderTotal = 0;
-    if (updatedOrderItems[0]) {
-      console.log('cart items is ', updatedOrderItems);
+    if (!updatedOrderItems.includes(undefined)) {
       orderTotal = updatedOrderItems.reduce((total, item) => {
-        console.log('price is ', item.price / 100);
-        console.log('quantity is ', item.quantity);
         return total + (item.price / 100) * item.quantity;
       }, 0);
     }
@@ -43,14 +50,10 @@ class Cart extends React.Component {
       <div>
         <h1>Your Cart: </h1>
         {order_items.length === 0 && <div>Nothing in Cart</div>}
-        {updatedOrderItems[0] &&
+        {!updatedOrderItems.includes(undefined) &&
           updatedOrderItems.map((item) => {
             return (
-              // <div key={item.id}>
-              //   {item.quantity}
-              // </div>
-              // <CartItem item={item} key={item.id}/>
-              <SingleCartItem key={item.id} item={item} />
+              <SingleCartItem key={item.id} item={item} handleDelete={this.handleDelete} />
             );
           })}
         <h1>
@@ -73,6 +76,7 @@ const mapDispatch = (dispatch) => {
   return {
     getOrder: (userId) => dispatch(fetchOrder(userId)),
     getOrderItems: (orderId) => dispatch(fetchOrderItems(orderId)),
+    deleteItem: (itemId) => dispatch(deleteOrderItem(itemId))
   };
 };
 

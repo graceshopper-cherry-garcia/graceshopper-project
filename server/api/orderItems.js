@@ -1,8 +1,7 @@
 const router = require('express').Router();
 const {
-  models: { Order_Item, Order, Item },
+  models: { Order_Item, Order },
 } = require('../db');
-const User = require('../db/models/User');
 
 
 router.get('/:orderId', async (req, res, next) => {
@@ -37,9 +36,41 @@ router.post('/', async (req, res, next) => {
 
     const orderItem = await Order_Item.create(orderItemInput);
     res.send(orderItem);
-  } catch (e) {
-    next(e);
+  } catch (error) {
+    next(error);
   }
 });
+
+// PUT /api/orderItems update an orderItem
+
+router.put('/', async (req, res, next) => {
+  try {
+    const orderItem = await Order_Item.findOne({
+      where: {
+        orderId: req.body.orderId,
+        itemId: req.body.itemId
+      }
+    });
+    await orderItem.update(req.body);
+    res.send(orderItem)
+  } catch (error) {
+    next(error)
+  }
+})
+
+// DELETE /api/orderItems update an orderItem
+router.delete('/:itemId', async (req, res, next) => {
+  try {
+    const orderItem = await Order_Item.findOne({
+      where: {
+        itemId: req.params.itemId
+      }
+    });
+    await orderItem.destroy();
+    res.send(orderItem)
+  } catch (error) {
+    next(error)
+  }
+})
 
 module.exports = router;

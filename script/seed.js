@@ -46,6 +46,7 @@ const descriptions = [
 ];
 let itemNames = [];
 const bandNames = [];
+//used with generateCategory
 const productNames = [];
 const bandImages = {
   Queen: 'https://m.media-amazon.com/images/I/81fZ-TE7J1L._SY500_.jpg',

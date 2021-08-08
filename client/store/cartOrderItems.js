@@ -1,7 +1,8 @@
 import axios from 'axios'
 
 //action constants
-const SET_CART_ITEMS = 'SET_CART_ITEMS'
+const SET_CART_ITEMS = 'SET_CART_ITEMS';
+
 
 //action creators
 
@@ -24,6 +25,7 @@ export const fetchOrderItems = (orderId) => {
     }
   }
 }
+
 
 //reducer
 

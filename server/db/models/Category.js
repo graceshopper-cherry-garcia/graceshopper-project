@@ -1,16 +1,6 @@
 const db = require('../db');
 const Sequelize = require('sequelize');
 
-const bands = [
-  'Queen',
-  'Trash Mood',
-  'Blink-182',
-  'Linkin park',
-  'mouse-rat',
-  'The Cure',
-
-];
-
 const products = [
   'coffee mug',
   'poster',

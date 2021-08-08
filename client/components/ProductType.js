@@ -8,7 +8,9 @@ export class ProductType extends React.Component {
   render(){
     console.log(this.props)
     return(
-      <div>Hello</div>
+      <div className="product-archtype">
+        
+      </div>
     )
   }
 }
