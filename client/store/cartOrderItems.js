@@ -2,7 +2,7 @@ import axios from 'axios'
 
 //action constants
 const SET_CART_ITEMS = 'SET_CART_ITEMS';
-const DELETE_CART_ITEM = 'DELETE_CART_ITEM'
+// const DELETE_CART_ITEM = 'DELETE_CART_ITEM'
 
 //action creators
 
@@ -13,12 +13,12 @@ const cartItems = (cartItems) => {
   }
 }
 
-export const deleteCartItem = (cartItem) => {
-  return {
-    type: DELETE_CART_ITEM,
-    cartItem,
-  };
-};
+// export const deleteCartItem = (cartItem) => {
+//   return {
+//     type: DELETE_CART_ITEM,
+//     cartItem,
+//   };
+// };
 
 //Thunks
 
@@ -34,16 +34,16 @@ export const fetchOrderItems = (orderId) => {
 }
 
 
-export const deleteCartItemThunk = (itemId) => {
-  return async (dispatch) => {
-    try {
-      const { data } = await axios.delete(`/api/orderItems/${itemId}`);
-      dispatch(deleteCartItem(data));
-    } catch (error) {
-      console.error(error);
-    }
-  };
-};
+// export const deleteCartItemThunk = (itemId) => {
+//   return async (dispatch) => {
+//     try {
+//       const { data } = await axios.delete(`/api/orderItems/${itemId}`);
+//       dispatch(deleteCartItem(data));
+//     } catch (error) {
+//       console.error(error);
+//     }
+//   };
+// };
 
 //reducer
 
@@ -51,8 +51,8 @@ export default function(state = [], action) {
   switch(action.type) {
     case SET_CART_ITEMS:
       return action.cartItems
-      case DELETE_CART_ITEM:
-        return state.filter((item) => item.itemId !== action.cartItem.id);
+      // case DELETE_CART_ITEM:
+      //   return state.filter((item) => item.itemId !== action.cartItem.id);
     default:
       return state
   }

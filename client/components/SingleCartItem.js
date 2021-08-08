@@ -30,7 +30,7 @@ export class SingleCartItem extends React.Component {
   // }
 
   render() {
-    console.log(this.props);
+    // console.log(this.props);
     const item = this.props.item;
     const price = item.price / 100;
     return (

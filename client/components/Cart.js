@@ -3,12 +3,12 @@ import { fetchOrder } from '../store/order';
 import { fetchOrderItems } from '../store/cartOrderItems';
 import { connect } from 'react-redux';
 import SingleCartItem from './SingleCartItem';
-import { deleteCartItemThunk } from "../store/cartOrderItems";
+import { deleteOrderItem } from "../store/orderItem";
 
 
 class Cart extends React.Component {
-  constructor() {
-    super();
+  constructor(props) {
+    super(props);
     this.concatItems = this.concatItems.bind(this);
     this.handleDelete = this.handleDelete.bind(this);
 
@@ -16,7 +16,7 @@ class Cart extends React.Component {
 
   async componentDidMount() {
     await this.props.getOrder(this.props.user.id);
-    this.props.getOrderItems(this.props.order.id);
+    await this.props.getOrderItems(this.props.order.id);
   }
 
   concatItems(items, order_items) {
@@ -29,13 +29,14 @@ class Cart extends React.Component {
     });
   }
 
-  handleDelete(event) {
-    this.props.deleteItem(event.target.value);
-    console.log(this.item)
+  async handleDelete(event) {
+    await this.props.deleteItem(event.target.value);
+    await this.props.getOrder(this.props.user.id);
+    await this.props.getOrderItems(this.props.order.id);
+
   }
 
   render() {
-    // console.log('props', this.props);
     const order_items = this.props.orderItems || [];
     const items = this.props.order.items || [];
     const updatedOrderItems = this.concatItems(items, order_items);
@@ -78,8 +79,7 @@ const mapDispatch = (dispatch) => {
   return {
     getOrder: (userId) => dispatch(fetchOrder(userId)),
     getOrderItems: (orderId) => dispatch(fetchOrderItems(orderId)),
-    deleteItem: (itemId) => dispatch(deleteCartItemThunk(itemId))
-
+    deleteItem: (itemId) => dispatch(deleteOrderItem(itemId))
   };
 };
 
