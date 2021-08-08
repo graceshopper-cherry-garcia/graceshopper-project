@@ -9,6 +9,7 @@ import AddItemForm from './components/AddItemForm';
 import EditItem from './components/EditItem';
 import Cart from './components/Cart';
 import Checkout from './components/Checkout';
+import OrderConfirmation from './components/OrderConfirmation';
 
 /**
  * COMPONENT
@@ -26,6 +27,7 @@ class Routes extends Component {
       <div>
         {isLoggedIn ? (
           <Switch>
+            <Route exact path="/orderConfirmation" component={OrderConfirmation} />
             <Route exact path="/cart" component={Cart} />
             <Route exact path="/checkout" component={Checkout} />
             <Route exact path="/addItem" component={AddItemForm} />
