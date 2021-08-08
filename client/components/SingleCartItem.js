@@ -11,7 +11,6 @@ export class SingleCartItem extends React.Component {
       quantity: this.props.item.quantity || 0,
     };
     this.handleChange = this.handleChange.bind(this);
-    // this.handleDelete = this.handleDelete.bind(this);
   }
 
   async handleChange(evt) {
@@ -25,9 +24,6 @@ export class SingleCartItem extends React.Component {
     this.props.updateItem(updatedOrderItem)
   }
 
-  // handleDelete(event) {
-  //   this.props.deleteItem(event.target.value)
-  // }
 
   render() {
     // console.log(this.props);
@@ -51,26 +47,16 @@ export class SingleCartItem extends React.Component {
             value={this.state.quantity}
           />
         </div>
-        <h3>{`Subtotal: $${price * this.state.quantity}`}</h3>
+        <h3>{`Subtotal: $${(price * this.state.quantity).toFixed(2)}`}</h3>
       </div>
     );
   }
 }
 
-// const mapState = (state) => {
-//   return {
-//     order: state.cart,
-//     // user: state.auth,
-//     orderItems: state.cartItems,
-//   };
-// };
-
-
 
 const mapDispatch = (dispatch) => {
   return {
     updateItem: (orderItem) => dispatch(updateOrderItem(orderItem)),
-    // deleteItem: (itemId) => dispatch(deleteCartItemThunk(itemId))
   };
 };
 

@@ -1,14 +1,15 @@
-import React from 'react';
-import { connect } from 'react-redux';
-import { Link } from 'react-router-dom';
-import { fetchItem, deleteItemThunk } from '../store/singleItem';
-import { addOrderItem } from '../store/orderItem';
+import React from "react";
+import { connect } from "react-redux";
+import { Link } from "react-router-dom";
+import { fetchItem, deleteItemThunk } from "../store/singleItem";
+import { addOrderItem } from "../store/orderItem";
 
 export class SingleItem extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
       quantity: 1,
+      addedToCart: false,
     };
     this.handleSubmit = this.handleSubmit.bind(this);
     this.handleChange = this.handleChange.bind(this);
@@ -27,6 +28,9 @@ export class SingleItem extends React.Component {
       purchasePrice: this.props.item.price,
       itemId: this.props.item.id,
       user: this.props.user,
+    });
+    this.setState({
+      addedToCart: true,
     });
   }
 
@@ -85,6 +89,23 @@ export class SingleItem extends React.Component {
             </Link>
             <button onClick={() => this.props.deleteItem(item)} type="button">
               Delete
+            </button>
+          </div>
+        )}
+        {this.state.addedToCart && (
+          <div
+            className="alert alert-secondary alert-dismissible fade show"
+            role="alert"
+          >
+            Added {this.state.quantity} {item.name}
+            {this.state.quantity > 1 ? "s" : ""} to cart!
+            <button
+              type="button"
+              className="close"
+              data-dismiss="alert"
+              aria-label="Close"
+            >
+              <span aria-hidden="true">&times;</span>
             </button>
           </div>
         )}

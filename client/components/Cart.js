@@ -33,7 +33,6 @@ class Cart extends React.Component {
     await this.props.deleteItem(event.target.value);
     await this.props.getOrder(this.props.user.id);
     await this.props.getOrderItems(this.props.order.id);
-
   }
 
   render() {
