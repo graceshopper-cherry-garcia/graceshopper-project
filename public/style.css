@@ -42,10 +42,24 @@ form div {
   margin: 1em;
   display: inline-block;
 }
-
-.single-item-container {
+.all-items-container {
   display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+  justify-content: space-evenly;=
+
+
 }
+.all-items-single-container {
+width: 25%;
+padding: 2em;
+}
+
+/* .single-item-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+} */
 
 .add-to-cart {
   display: inline-flex;

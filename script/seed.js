@@ -45,6 +45,7 @@ const descriptions = [
 ];
 let itemNames = [];
 
+
 for (let x = 0; x < bands.length; x++) {
   for (let y = 0; y < products.length; y++) {
     itemNames.push(bands[x] + ' ' + products[y]);
@@ -58,6 +59,7 @@ const generatePrice = () => {
 const generateDescription = () => {
   return descriptions[Math.floor(Math.random() * descriptions.length)];
 };
+
 // console.log(generateDescription())
 
 async function seed() {
