@@ -9,11 +9,12 @@ export default class ListSingleItem extends React.Component {
   render() {
     const item = this.props.item;
     const price = item.price / 100;
+    console.log(this.props)
     return (
       <div>
         <Link to={`/items/${this.props.item.id}`}>
+          <img width="200px" src={item.imageUrl} />
           <ul>
-            <img width="200px" src={item.imageUrl} />
             <li>{item.name}</li> {/* Area for Item Name*/}
             <li>{`$${price.toFixed(2)}`}</li>
             {/* Area for Item Price*/}

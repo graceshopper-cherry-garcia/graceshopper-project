@@ -1,5 +1,6 @@
 'use strict';
 
+const e = require('express');
 const {
   db,
   models: { User, Item, Order_Item, Order, Category },
@@ -14,8 +15,8 @@ const bands = [
   'Queen',
   'Trash Mood',
   'Blink-182',
-  'Linkin park',
-  'mouse-rat',
+  'Linkin Park',
+  'Mouse-Rat',
   'The Cure',
 ];
 const products = [
@@ -44,13 +45,37 @@ const descriptions = [
   'No collection is complete without this',
 ];
 let itemNames = [];
-
+const bandNames = [];
+const productNames = [];
+const images = {
+  Queen: 'https://m.media-amazon.com/images/I/81fZ-TE7J1L._SY500_.jpg',
+  'Blink-182':
+    'https://nerdist.com/wp-content/uploads/2021/04/BLink182cover2.jpg',
+    'The Cure' : 'https://i.pinimg.com/564x/2f/c3/e7/2fc3e78fd725127fb209624a5b6c67e2.jpg',
+    'Mouse-Rat' : 'https://townsquare.media/site/366/files/2021/05/Mouse-Rat-The-Awesome-Album-Artwork.jpg?w=720&h=720&q=75',
+    'Linkin Park' : 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTBO8CIJLsP2Zo9uhAlbNENegDsXvSxKWYRtCJtRumrPyr-D6hMc6v7_9B_PMt7Q9Oqmf8&usqp=CAU',
+    'Trash Mood' : 'https://i1.sndcdn.com/avatars-000399683646-nyl0co-t500x500.jpg'
+};
 
 for (let x = 0; x < bands.length; x++) {
   for (let y = 0; y < products.length; y++) {
     itemNames.push(bands[x] + ' ' + products[y]);
+    bandNames.push(bands[x]);
+    productNames.push(products[y]);
   }
 }
+const generateImage = (item) => {
+  let band = [];
+  let productParts = item.split(' ');
+  for (let word of productParts) {
+    if (word[0] === word[0].toUpperCase()) {
+      band.push(word + '');
+    }
+  }
+  band = band.join(' ');
+  console.log(band);
+  return images[band];
+};
 
 const generatePrice = () => {
   return parseInt(Math.random() * 10000, 10);
@@ -59,8 +84,6 @@ const generatePrice = () => {
 const generateDescription = () => {
   return descriptions[Math.floor(Math.random() * descriptions.length)];
 };
-
-// console.log(generateDescription())
 
 async function seed() {
   try {
@@ -89,10 +112,10 @@ async function seed() {
           name: item,
           description: generateDescription() + ' ' + item,
           price: generatePrice(),
+          imageUrl: generateImage(item),
         });
       })
     );
-
 
     //Create Order
     // await Order.create({
