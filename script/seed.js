@@ -1,8 +1,9 @@
 'use strict';
 
+const e = require('express');
 const {
   db,
-  models: { User, Item, Order_Item, Order },
+  models: { User, Item, Order_Item, Order, Category },
 } = require('../server/db');
 
 /**
@@ -14,8 +15,8 @@ const bands = [
   'Queen',
   'Trash Mood',
   'Blink-182',
-  'Linkin park',
-  'mouse-rat',
+  'Linkin Park',
+  'Mouse-Rat',
   'The Cure',
 ];
 const products = [
@@ -27,25 +28,72 @@ const products = [
   'phone case',
   'fidget spinner',
   'jacket',
-  'pants',
+  'pair of pants',
   'cup',
   'bottle opener',
   'hoodie',
   'videogame',
   'lamp',
 ];
+const descriptions = [
+  'An awesome',
+  'A really cool',
+  'A dope',
+  'A kick-ass',
+  'A one-of-a-kind',
+  'The most metal',
+  'No collection is complete without this',
+];
 let itemNames = [];
+const bandNames = [];
+//used with generateCategory
+const productNames = [];
+const bandImages = {
+  Queen: 'https://m.media-amazon.com/images/I/81fZ-TE7J1L._SY500_.jpg',
+  'Blink-182':
+    'https://nerdist.com/wp-content/uploads/2021/04/BLink182cover2.jpg',
+    'The Cure' : 'https://i.pinimg.com/564x/2f/c3/e7/2fc3e78fd725127fb209624a5b6c67e2.jpg',
+    'Mouse-Rat' : 'https://townsquare.media/site/366/files/2021/05/Mouse-Rat-The-Awesome-Album-Artwork.jpg?w=720&h=720&q=75',
+    'Linkin Park' : 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTBO8CIJLsP2Zo9uhAlbNENegDsXvSxKWYRtCJtRumrPyr-D6hMc6v7_9B_PMt7Q9Oqmf8&usqp=CAU',
+    'Trash Mood' : 'https://i1.sndcdn.com/avatars-000399683646-nyl0co-t500x500.jpg'
+};
+
 
 for (let x = 0; x < bands.length; x++) {
   for (let y = 0; y < products.length; y++) {
     itemNames.push(bands[x] + ' ' + products[y]);
+    bandNames.push(bands[x]);
+    productNames.push(products[y]);
   }
 }
+const generateImage = (item) => {
+  let band = [];
+  let product = [];
+  let productParts = item.split(' ');
+  for (let word of productParts) {
+    if (word[0] === word[0].toUpperCase()) {
+      band.push(word);
+    } else {
+      product.push(word)
+    }
+  }
+  band = band.join(' ');
+  // console.log('band: ', band);
+  console.log('product:', product)
+  return bandImages[band];
+};
 
 const generatePrice = () => {
   return parseInt(Math.random() * 10000, 10);
 };
 
+const generateDescription = () => {
+  return descriptions[Math.floor(Math.random() * descriptions.length)];
+};
+
+// const generateCategory = (item) => {
+
+// }
 async function seed() {
   try {
     await db.sync({ force: true }); // clears db and matches models to tables
@@ -69,7 +117,12 @@ async function seed() {
     //Creating Items
     const items = await Promise.all(
       itemNames.map((item) => {
-        return Item.create({ name: item, price: generatePrice() });
+        return Item.create({
+          name: item,
+          description: generateDescription() + ' ' + item,
+          price: generatePrice(),
+          imageUrl: generateImage(item),
+        });
       })
     );
 

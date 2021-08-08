@@ -3,6 +3,7 @@ import { fetchOrder } from '../store/order';
 import { fetchOrderItems } from '../store/cartOrderItems';
 import { connect } from 'react-redux';
 import SingleCartItem from './SingleCartItem';
+
 import { deleteOrderItem } from '../store/orderItem';
 import { Route } from 'react-router-dom';
 import Checkout from './Checkout';
@@ -11,7 +12,6 @@ import { setCart } from '../store/cart';
 class Cart extends React.Component {
   constructor(props) {
     super(props);
-    // this.concatItems = this.concatItems.bind(this);
     this.handleDelete = this.handleDelete.bind(this);
   }
 
@@ -22,27 +22,20 @@ class Cart extends React.Component {
     await this.props.setCart(this.props.user.id);
   }
 
-  // concatItems(items, order_items) {
-  //   return items.map((item) => {
-  //     for (let i = 0; i < order_items.length; i++) {
-  //       if (order_items[i].itemId === item.id) {
-  //         return { ...item, quantity: order_items[i].quantity };
-  //       }
-  //     }
-  //   });
-  // }
-
   async handleDelete(event) {
     await this.props.deleteItem(event.target.value);
     await this.props.setCart(this.props.user.id);
-    // await this.props.getOrder(this.props.user.id);
-    // await this.props.getOrderItems(this.props.order.id);
+  }
+
+  async handleDelete(event) {
+    await this.props.deleteItem(event.target.value);
+    await this.props.getOrder(this.props.user.id);
+    await this.props.getOrderItems(this.props.order.id);
+
   }
 
   render() {
     console.log('checkout please', this.props.cart);
-    // const order_items = this.props.orderItems || [];
-    // const items = this.props.order.items || [];
     const cart = this.props.cart;
     let orderTotal = 0;
     if (!cart.includes(undefined)) {

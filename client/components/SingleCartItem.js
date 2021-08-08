@@ -4,6 +4,7 @@ import { deleteCartItemThunk } from '../store/cartOrderItems';
 import { connect } from 'react-redux';
 import { setCart } from '../store/cart';
 
+
 export class SingleCartItem extends React.Component {
   constructor(props) {
     super(props);
@@ -11,9 +12,8 @@ export class SingleCartItem extends React.Component {
       quantity: this.props.item.quantity || 0,
     };
     this.handleChange = this.handleChange.bind(this);
-    // this.handleDelete = this.handleDelete.bind(this);
   }
-
+  
   async handleChange(evt) {
     await this.setState({
       [evt.target.name]: evt.target.value,
@@ -26,12 +26,7 @@ export class SingleCartItem extends React.Component {
     this.props.setCart(this.props.user.id);
   }
 
-  // handleDelete(event) {
-  //   this.props.deleteItem(event.target.value)
-  // }
-
   render() {
-    // console.log(this.props);
     const item = this.props.item;
     const price = item.price / 100;
     return (
@@ -70,8 +65,10 @@ const mapState = (state) => {
 const mapDispatch = (dispatch) => {
   return {
     updateItem: (orderItem) => dispatch(updateOrderItem(orderItem)),
+
     setCart: (userId) => dispatch(setCart(userId)),
   };
 };
 
 export default connect(mapState, mapDispatch)(SingleCartItem);
+
