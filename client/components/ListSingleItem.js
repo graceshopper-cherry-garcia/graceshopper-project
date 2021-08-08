@@ -14,7 +14,6 @@ export default class ListSingleItem extends React.Component {
       <div>
         <Link to={`/items/${this.props.item.id}`}>
           <ProductType item ={item}/>
-          <img width="200px" height= "200px" src={item.imageUrl} />
           <ul>
             <li>{item.name}</li> {/* Area for Item Name*/}
             <li>{`$${price.toFixed(2)}`}</li>
