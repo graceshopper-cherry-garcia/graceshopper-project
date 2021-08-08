@@ -1,5 +1,6 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
+import { ProductType } from './ProductType';
 
 export default class ListSingleItem extends React.Component {
   constructor(props) {
@@ -9,11 +10,11 @@ export default class ListSingleItem extends React.Component {
   render() {
     const item = this.props.item;
     const price = item.price / 100;
-    console.log(this.props)
     return (
       <div>
         <Link to={`/items/${this.props.item.id}`}>
-          <img width="200px" src={item.imageUrl} />
+          <ProductType item ={item}/>
+          <img width="200px" height= "200px" src={item.imageUrl} />
           <ul>
             <li>{item.name}</li> {/* Area for Item Name*/}
             <li>{`$${price.toFixed(2)}`}</li>

@@ -1,12 +1,14 @@
 import React from 'react';
 
 
-export class ProductImage extends React.Component {
+export class ProductType extends React.Component {
   constructor(props) {
     super(props);
   }
   render(){
     console.log(this.props)
-    return;
+    return(
+      <div>Hello</div>
+    )
   }
 }

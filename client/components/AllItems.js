@@ -13,7 +13,6 @@ export class AllItems extends React.Component {
   }
 
   render() {
-    console.log(this.props);
     return (
       <div className="all-items-container">
         {this.props.items.map((item) => {

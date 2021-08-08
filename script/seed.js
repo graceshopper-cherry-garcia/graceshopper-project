@@ -47,7 +47,7 @@ const descriptions = [
 let itemNames = [];
 const bandNames = [];
 const productNames = [];
-const images = {
+const bandImages = {
   Queen: 'https://m.media-amazon.com/images/I/81fZ-TE7J1L._SY500_.jpg',
   'Blink-182':
     'https://nerdist.com/wp-content/uploads/2021/04/BLink182cover2.jpg',
@@ -56,6 +56,7 @@ const images = {
     'Linkin Park' : 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTBO8CIJLsP2Zo9uhAlbNENegDsXvSxKWYRtCJtRumrPyr-D6hMc6v7_9B_PMt7Q9Oqmf8&usqp=CAU',
     'Trash Mood' : 'https://i1.sndcdn.com/avatars-000399683646-nyl0co-t500x500.jpg'
 };
+
 
 for (let x = 0; x < bands.length; x++) {
   for (let y = 0; y < products.length; y++) {
@@ -66,15 +67,19 @@ for (let x = 0; x < bands.length; x++) {
 }
 const generateImage = (item) => {
   let band = [];
+  let product = [];
   let productParts = item.split(' ');
   for (let word of productParts) {
     if (word[0] === word[0].toUpperCase()) {
-      band.push(word + '');
+      band.push(word);
+    } else {
+      product.push(word)
     }
   }
   band = band.join(' ');
-  console.log(band);
-  return images[band];
+  // console.log('band: ', band);
+  console.log('product:', product)
+  return bandImages[band];
 };
 
 const generatePrice = () => {
@@ -85,6 +90,9 @@ const generateDescription = () => {
   return descriptions[Math.floor(Math.random() * descriptions.length)];
 };
 
+// const generateCategory = (item) => {
+
+// }
 async function seed() {
   try {
     await db.sync({ force: true }); // clears db and matches models to tables
