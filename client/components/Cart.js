@@ -3,7 +3,7 @@ import { fetchOrder } from '../store/order';
 import { fetchOrderItems } from '../store/cartOrderItems';
 import { connect } from 'react-redux';
 import SingleCartItem from './SingleCartItem';
-
+import { Link } from 'react-router-dom';
 import { deleteOrderItem } from '../store/orderItem';
 import { Route } from 'react-router-dom';
 import Checkout from './Checkout';
@@ -16,9 +16,6 @@ class Cart extends React.Component {
   }
 
   async componentDidMount() {
-    // await this.props.getOrder(this.props.user.id);
-    // await this.props.getOrderItems(this.props.order.id);
-    console.log('user id is ', this.props.user.id);
     await this.props.setCart(this.props.user.id);
   }
 
@@ -27,15 +24,8 @@ class Cart extends React.Component {
     await this.props.setCart(this.props.user.id);
   }
 
-  async handleDelete(event) {
-    await this.props.deleteItem(event.target.value);
-    await this.props.getOrder(this.props.user.id);
-    await this.props.getOrderItems(this.props.order.id);
-
-  }
 
   render() {
-    console.log('checkout please', this.props.cart);
     const cart = this.props.cart;
     let orderTotal = 0;
     if (!cart.includes(undefined)) {
@@ -60,7 +50,9 @@ class Cart extends React.Component {
         <h1>
           Order Total: <span>{`$${orderTotal}`}</span>
         </h1>
-        <button type="button">Submit Order</button>
+        <Link to='/checkout'>
+          <button type="button">Checkout</button>
+        </Link>
       </div>
     );
   }
