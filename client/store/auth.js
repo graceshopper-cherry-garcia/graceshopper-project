@@ -18,13 +18,13 @@ const setAuth = (auth) => ({ type: SET_AUTH, auth });
  */
 export const me = () => async (dispatch) => {
   const token = window.localStorage.getItem(TOKEN);
-
   if (token) {
     const res = await axios.get('/auth/me', {
       headers: {
         authorization: token,
       },
     });
+    console.log(res);
     return dispatch(setAuth(res.data));
   }
 };
@@ -38,7 +38,7 @@ export const authenticate =
         email,
       });
       window.localStorage.setItem(TOKEN, res.data.token);
-      console.log(window.localStorage)
+      console.log(window.localStorage);
       dispatch(me());
     } catch (authError) {
       return dispatch(setAuth({ error: authError }));
