@@ -57,20 +57,11 @@ export class SingleCartItem extends React.Component {
   }
 }
 
-// const mapState = (state) => {
-//   return {
-//     order: state.cart,
-//     // user: state.auth,
-//     orderItems: state.cartItems,
-//   };
-// };
-
 
 
 const mapDispatch = (dispatch) => {
   return {
     updateItem: (orderItem) => dispatch(updateOrderItem(orderItem)),
-    // deleteItem: (itemId) => dispatch(deleteCartItemThunk(itemId))
   };
 };
 

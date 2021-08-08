@@ -41,11 +41,8 @@ class Cart extends React.Component {
     const items = this.props.order.items || [];
     const updatedOrderItems = this.concatItems(items, order_items);
     let orderTotal = 0;
-    if (updatedOrderItems[0]) {
-      // console.log('cart items is ', updatedOrderItems);
+    if (!updatedOrderItems.includes(undefined)) {
       orderTotal = updatedOrderItems.reduce((total, item) => {
-        // console.log('price is ', item.price / 100);
-        // console.log('quantity is ', item.quantity);
         return total + (item.price / 100) * item.quantity;
       }, 0);
     }
@@ -53,7 +50,7 @@ class Cart extends React.Component {
       <div>
         <h1>Your Cart: </h1>
         {order_items.length === 0 && <div>Nothing in Cart</div>}
-        {updatedOrderItems[0] &&
+        {!updatedOrderItems.includes(undefined) &&
           updatedOrderItems.map((item) => {
             return (
               <SingleCartItem key={item.id} item={item} handleDelete={this.handleDelete} />
