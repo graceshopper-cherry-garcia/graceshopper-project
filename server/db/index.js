@@ -6,6 +6,7 @@ const User = require('./models/User');
 const Item = require('./models/Item');
 const Order_Item = require('./models/OrderItem');
 const Order = require('./models/Order')
+const Category = require('./models/Category')
 
 //associations could go here!
 
@@ -21,6 +22,7 @@ module.exports = {
     User,
     Item,
     Order_Item,
-    Order
+    Order,
+    Category
   },
 };

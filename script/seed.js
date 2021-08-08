@@ -2,7 +2,7 @@
 
 const {
   db,
-  models: { User, Item, Order_Item, Order },
+  models: { User, Item, Order_Item, Order, Category },
 } = require('../server/db');
 
 /**
@@ -27,12 +27,21 @@ const products = [
   'phone case',
   'fidget spinner',
   'jacket',
-  'pants',
+  'pair of pants',
   'cup',
   'bottle opener',
   'hoodie',
   'videogame',
   'lamp',
+];
+const descriptions = [
+  'An awesome',
+  'A really cool',
+  'A dope',
+  'A kick-ass',
+  'A one-of-a-kind',
+  'The most metal',
+  'No collection is complete without this',
 ];
 let itemNames = [];
 
@@ -45,6 +54,11 @@ for (let x = 0; x < bands.length; x++) {
 const generatePrice = () => {
   return parseInt(Math.random() * 10000, 10);
 };
+
+const generateDescription = () => {
+  return descriptions[Math.floor(Math.random() * descriptions.length)];
+};
+// console.log(generateDescription())
 
 async function seed() {
   try {
@@ -69,9 +83,14 @@ async function seed() {
     //Creating Items
     const items = await Promise.all(
       itemNames.map((item) => {
-        return Item.create({ name: item, price: generatePrice() });
+        return Item.create({
+          name: item,
+          description: generateDescription() + ' ' + item,
+          price: generatePrice(),
+        });
       })
     );
+
 
     //Create Order
     // await Order.create({

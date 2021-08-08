@@ -1,5 +1,6 @@
 body {
-  font-family: sans-serif;
+  font-family: 'Montserrat', sans-serif;
+  font-family: 'Staatliches', 'cursive';
 }
 
 a {
@@ -8,6 +9,28 @@ a {
 
 label {
   display: block;
+}
+.logo {
+  background-color: black;
+  color: white;
+  margin: 0;
+}
+
+nav {
+  background-color: rgba(221, 164, 191, 0.74);
+  width: 100%;
+}
+.nav-container {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+}
+.holder {
+  display: inline;
+}
+
+.right-side {
+  justify-self: stretch;
 }
 
 nav a {
