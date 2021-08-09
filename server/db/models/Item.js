@@ -1,5 +1,6 @@
 const db = require('../db');
 const Sequelize = require('sequelize');
+const Category = require('./Category');
 
 const Item = db.define('item', {
   name: {
@@ -27,6 +28,12 @@ const Item = db.define('item', {
   stock: {
     type: Sequelize.INTEGER,
     defaultValue: 1000
+  },
+  categoryId: {
+    type: Sequelize.INTEGER,
+    references: {
+      model: Category,
+    }
   }
 });
 

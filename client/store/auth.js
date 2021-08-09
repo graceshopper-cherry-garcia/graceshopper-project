@@ -47,6 +47,7 @@ export const authenticate =
 
 export const logout = () => {
   window.localStorage.removeItem(TOKEN);
+  axios.delete('/auth/removeCookie');
   history.push('/login');
   return {
     type: SET_AUTH,
