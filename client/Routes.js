@@ -39,8 +39,10 @@ class Routes extends Component {
         ) : (
 
           <Switch>
-          {!window.localStorage.cart && window.localStorage.setItem('cart', JSON.stringify({'items': []}))}
-
+            {!window.localStorage.cart && window.localStorage.setItem('cart', JSON.stringify({'items': []}))}
+            <Route exact path="/cart" component={Cart} />
+            <Route exact path="/checkout" component={Checkout} />
+            <Route exact path="/orderConfirmation" component={OrderConfirmation} />
             <Route exact path="/" component={Home} />
             <Route exact path="/home" component={Home} />
             <Route path="/login" component={Login} />

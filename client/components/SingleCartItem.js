@@ -18,12 +18,26 @@ export class SingleCartItem extends React.Component {
     await this.setState({
       [evt.target.name]: evt.target.value,
     });
-    const updatedOrderItem = {
-      ...this.props.item.order_item,
-      quantity: this.state.quantity,
-    };
-    this.props.updateItem(updatedOrderItem);
-    this.props.setCart(this.props.user.id);
+    if (this.props.user.username){
+      const updatedOrderItem = {
+        ...this.props.item.order_item,
+        quantity: this.state.quantity,
+      };
+      this.props.updateItem(updatedOrderItem);
+      this.props.setCart(this.props.user.id);
+    } else {
+      let cart = JSON.parse(window.localStorage.getItem('cart'));
+      let existingItems = cart.items;
+      console.log('existingItems in singleCartItem', existingItems)
+      const guestCart = existingItems.map((item) => {
+        if (item.id === this.props.item.id){
+          item.quantity = parseInt(this.state.quantity,10)
+        }
+        return item
+      })
+
+      console.log('singleItem', guestCart)
+    }
   }
 
   render() {
