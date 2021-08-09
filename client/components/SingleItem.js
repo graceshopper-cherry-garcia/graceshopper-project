@@ -21,13 +21,32 @@ export class SingleItem extends React.Component {
   }
 
   handleSubmit(event) {
-    event.preventDefault();
-    this.props.addToCart({
+    const cartItem = {
       quantity: this.state.quantity,
       purchasePrice: this.props.item.price,
       itemId: this.props.item.id,
       user: this.props.user,
-    });
+    }
+    if(this.props.user.name) {
+      event.preventDefault();
+      this.props.addToCart(cartItem);
+    } else {
+      event.preventDefault();
+      let cart = JSON.parse(window.localStorage.getItem('cart'));
+      let existingItems = cart.items;
+      existingItems.push(cartItem);
+      // console.log(existingItems)
+      // console.log(JSON.stringify(existingItems))
+      window.localStorage.setItem('cart', JSON.stringify({'items': existingItems}))
+      // window.localStorage.setItem("cart", JSON.stringify(existingItems));
+
+
+      // existingItems = JSON.parse(existingItems)
+      }
+      // existingItems.push(cartItem);
+      // console.log(existingItems)
+    // }
+
 
   }
 
