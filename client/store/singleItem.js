@@ -17,7 +17,6 @@ export const setItem = (item) => {
 };
 
 
-
 export const updateItem = (item) => {
   return {
     type: UPDATE_ITEM,
@@ -38,10 +37,7 @@ export const fetchItem = (itemId) => {
   return async (dispatch) => {
     try {
       const { data } = await axios.get(`/api/items/${itemId}`);
-      // let newData = {
-      //   ...data,
-      //   data.price = data.price / 100
-      // }
+
       dispatch(setItem(data));
     } catch (error) {
       console.error(error)
