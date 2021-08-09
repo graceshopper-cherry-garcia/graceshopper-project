@@ -5,21 +5,45 @@ import { Link } from 'react-router-dom';
 import OrderConfirmation from './OrderConfirmation';
 
 class Checkout extends React.Component {
-  componentDidMount() {
-    this.props.setCart(this.props.user.id);
+  constructor(props) {
+    super(props);
+    this.state = {
+      cart: [],
+    };
+    this.updateCart = this.updateCart.bind(this);
+  }
+
+  updateCart() {
+    let guestCart = JSON.parse(window.localStorage.getItem('cart'));
+    this.setState({
+      cart: guestCart.items,
+    });
+  }
+
+  async componentDidMount() {
+    if (this.props.user.username) {
+      await this.props.setCart(this.props.user.id);
+    } else {
+      this.updateCart();
+    }
   }
   render() {
-    console.log('Checkout Props', this.props.cart);
+    let cart;
+    if (this.props.user.username) {
+      cart = this.props.cart;
+    } else {
+      cart = this.state.cart;
+    }
     let orderTotal = 0;
-    if (!this.props.cart.includes(undefined)) {
-      orderTotal = this.props.cart.reduce((total, item) => {
+    if (!cart.includes(undefined)) {
+      orderTotal = cart.reduce((total, item) => {
         return total + (item.price / 100) * item.quantity;
       }, 0);
     }
     return (
       <div>
-        {this.props.cart[0] &&
-          this.props.cart.map((item) => {
+        {cart[0] &&
+          cart.map((item) => {
             return (
               <div key={item.id}>
                 <h2>{item.name}</h2>
@@ -35,8 +59,8 @@ class Checkout extends React.Component {
           to={{
             pathname: '/orderConfirmation',
             props: {
-              cart: this.props.cart,
-              orderTotal: orderTotal
+              cart: cart,
+              orderTotal: orderTotal,
             },
           }}
         >

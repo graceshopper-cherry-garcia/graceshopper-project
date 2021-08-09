@@ -1,13 +1,13 @@
-import React from "react";
-import { fetchOrder } from "../store/order";
-import { fetchOrderItems } from "../store/cartOrderItems";
-import { connect } from "react-redux";
-import SingleCartItem from "./SingleCartItem";
-import { Link } from "react-router-dom";
-import { deleteOrderItem } from "../store/orderItem";
-import { Route } from "react-router-dom";
-import Checkout from "./Checkout";
-import { setCart } from "../store/cart";
+import React from 'react';
+import { fetchOrder } from '../store/order';
+import { fetchOrderItems } from '../store/cartOrderItems';
+import { connect } from 'react-redux';
+import SingleCartItem from './SingleCartItem';
+import { Link } from 'react-router-dom';
+import { deleteOrderItem } from '../store/orderItem';
+import { Route } from 'react-router-dom';
+import Checkout from './Checkout';
+import { setCart } from '../store/cart';
 
 class Cart extends React.Component {
   constructor(props) {
@@ -16,11 +16,11 @@ class Cart extends React.Component {
       cart: [],
     };
     this.handleDelete = this.handleDelete.bind(this);
-    this.updateQuantity = this.updateQuantity.bind(this);
+    this.updateCart = this.updateCart.bind(this);
   }
 
-  updateQuantity() {
-    let guestCart = JSON.parse(window.localStorage.getItem("cart"));
+  updateCart() {
+    let guestCart = JSON.parse(window.localStorage.getItem('cart'));
     this.setState({
       cart: guestCart.items,
     });
@@ -30,7 +30,7 @@ class Cart extends React.Component {
     if (this.props.user.username) {
       await this.props.setCart(this.props.user.id);
     } else {
-      this.updateQuantity();
+      this.updateCart();
     }
   }
 
@@ -39,12 +39,12 @@ class Cart extends React.Component {
       await this.props.deleteItem(event.target.value);
       await this.props.setCart(this.props.user.id);
     } else {
-      let cart = JSON.parse(window.localStorage.getItem("cart"));
+      let cart = JSON.parse(window.localStorage.getItem('cart'));
       let existingItems = cart.items;
       const guestCart = existingItems.filter((item) => {
         return item.id !== parseInt(event.target.value, 10);
       });
-      window.localStorage.setItem("cart", JSON.stringify({ items: guestCart }));
+      window.localStorage.setItem('cart', JSON.stringify({ items: guestCart }));
       this.setState({
         cart: guestCart,
       });
@@ -75,7 +75,7 @@ class Cart extends React.Component {
                 key={item.id}
                 item={item}
                 handleDelete={this.handleDelete}
-                updateQuantity={this.updateQuantity}
+                updateCart={this.updateCart}
               />
             );
           })}
