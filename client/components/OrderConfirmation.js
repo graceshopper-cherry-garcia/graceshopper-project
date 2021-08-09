@@ -7,9 +7,17 @@ export class OrderConfirmation extends React.Component {
     super(props);
   }
   componentDidMount() {
-    this.props.updateOrder(this.props.user.id);
+    if (this.props.user.username) {
+      console.log('if');
+      this.props.updateOrder(this.props.user.id);
+    } else {
+      console.log('else');
+      window.localStorage.clear();
+    }
   }
   render() {
+    console.log(' in order confirm');
+    console.log('storage is ', window.localStorage);
     const cart = this.props.location.props.cart || [];
     const totalPrice = this.props.location.props.orderTotal || '';
     return (
