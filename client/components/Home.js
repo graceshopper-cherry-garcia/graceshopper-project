@@ -7,7 +7,6 @@ import AllItems from './AllItems';
  */
 export const Home = (props) => {
   const { username } = props;
-  console.log('username: ', username);
   if (username) {
     return (
       <div>
