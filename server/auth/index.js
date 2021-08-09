@@ -28,8 +28,20 @@ router.post('/signup', async (req, res, next) => {
 
 router.get('/me', async (req, res, next) => {
   try {
+    const token = req.headers.authorization;
+    res.cookie('token', token, { httpOnly: true });
     res.send(await User.findByToken(req.headers.authorization));
   } catch (ex) {
     next(ex);
+  }
+});
+
+//delete cookie used to delete on logout
+router.delete('/removeCookie', (req, res, next) => {
+  try {
+    res.clearCookie('token');
+    res.sendStatus(200);
+  } catch (error) {
+    next(error);
   }
 });
