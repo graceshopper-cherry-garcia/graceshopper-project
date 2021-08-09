@@ -6,7 +6,7 @@ export class ProductType extends React.Component {
     super(props);
   }
   render(){
-    console.log('from product-type: ', this.props)
+    // console.log('from product-type: ', this.props)
     const item = this.props.item
     return(
       <div className="image-container">
