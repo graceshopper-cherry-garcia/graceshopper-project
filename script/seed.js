@@ -52,12 +52,31 @@ const bandImages = {
   Queen: 'https://m.media-amazon.com/images/I/81fZ-TE7J1L._SY500_.jpg',
   'Blink-182':
     'https://nerdist.com/wp-content/uploads/2021/04/BLink182cover2.jpg',
-    'The Cure' : 'https://i.pinimg.com/564x/2f/c3/e7/2fc3e78fd725127fb209624a5b6c67e2.jpg',
-    'Mouse-Rat' : 'https://townsquare.media/site/366/files/2021/05/Mouse-Rat-The-Awesome-Album-Artwork.jpg?w=720&h=720&q=75',
-    'Linkin Park' : 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTBO8CIJLsP2Zo9uhAlbNENegDsXvSxKWYRtCJtRumrPyr-D6hMc6v7_9B_PMt7Q9Oqmf8&usqp=CAU',
-    'Trash Mood' : 'https://i1.sndcdn.com/avatars-000399683646-nyl0co-t500x500.jpg'
+  'The Cure':
+    'https://i.pinimg.com/564x/2f/c3/e7/2fc3e78fd725127fb209624a5b6c67e2.jpg',
+  'Mouse-Rat':
+    'https://townsquare.media/site/366/files/2021/05/Mouse-Rat-The-Awesome-Album-Artwork.jpg?w=720&h=720&q=75',
+  'Linkin Park':
+    'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTBO8CIJLsP2Zo9uhAlbNENegDsXvSxKWYRtCJtRumrPyr-D6hMc6v7_9B_PMt7Q9Oqmf8&usqp=CAU',
+  'Trash Mood':
+    'https://i1.sndcdn.com/avatars-000399683646-nyl0co-t500x500.jpg',
 };
-
+const categoryIds = {
+  'coffee mug': 1,
+  poster: 2,
+  shirt: 3,
+  hat: 4,
+  guitar: 5,
+  'phone case': 6,
+  'fidget spinner': 7,
+  jacket: 8,
+  'pair of pants': 9,
+  cup: 10,
+  'bottle opener': 11,
+  hoodie: 12,
+  videogame: 13,
+  lamp: 14,
+};
 
 for (let x = 0; x < bands.length; x++) {
   for (let y = 0; y < products.length; y++) {
@@ -66,7 +85,7 @@ for (let x = 0; x < bands.length; x++) {
     productNames.push(products[y]);
   }
 }
-const generateImage = (item) => {
+const generateImage = (item, caller) => {
   let band = [];
   let product = [];
   let productParts = item.split(' ');
@@ -74,13 +93,12 @@ const generateImage = (item) => {
     if (word[0] === word[0].toUpperCase()) {
       band.push(word);
     } else {
-      product.push(word)
+      product.push(word);
     }
   }
   band = band.join(' ');
-  // console.log('band: ', band);
-  console.log('product:', product)
-  return bandImages[band];
+  product = product.join(' ');
+  return caller === 'image' ? bandImages[band] : categoryIds[product];
 };
 
 const generatePrice = () => {
@@ -91,9 +109,6 @@ const generateDescription = () => {
   return descriptions[Math.floor(Math.random() * descriptions.length)];
 };
 
-// const generateCategory = (item) => {
-
-// }
 async function seed() {
   try {
     await db.sync({ force: true }); // clears db and matches models to tables
@@ -121,11 +136,20 @@ async function seed() {
           name: item,
           description: generateDescription() + ' ' + item,
           price: generatePrice(),
-          imageUrl: generateImage(item),
+          imageUrl: generateImage(item, 'image'),
+          // categoryId: generateImage(item, 'category'),
         });
       })
     );
 
+    // seed category table
+    const categoryNames = await Promise.all(
+      products.map((product) => {
+        return Category.create({
+          name: product,
+        });
+      })
+    );
     //Create Order
     // await Order.create({
     //   userId: 1,
@@ -151,12 +175,6 @@ async function seed() {
     //     quantity: 5,
     //   }),
     // ]);
-
-    //Create associations
-    // await orders[0].setUser(1);
-    // await orders[1].setUser(1);
-    // await orders[0].setItem(await Item.findByPk(3));
-    // await orders[1].setItem(await Item.findByPk(10));
 
     //send information
     console.log(`seeded ${users.length} users`);

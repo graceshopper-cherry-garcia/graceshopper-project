@@ -48,7 +48,7 @@ class Cart extends React.Component {
             );
           })}
         <h1>
-          Order Total: <span>{`$${orderTotal}`}</span>
+          Order Total: <span>{`$${orderTotal.toFixed(2)}`}</span>
         </h1>
         <Link to='/checkout'>
           <button type="button">Checkout</button>
