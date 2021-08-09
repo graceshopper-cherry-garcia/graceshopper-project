@@ -12,11 +12,21 @@ import { setCart } from '../store/cart';
 class Cart extends React.Component {
   constructor(props) {
     super(props);
+    this.state = {
+      cart: []
+    }
     this.handleDelete = this.handleDelete.bind(this);
   }
 
   async componentDidMount() {
-    await this.props.setCart(this.props.user.id);
+    if (this.props.user.username){
+      await this.props.setCart(this.props.user.id);
+    } else {
+      let guestCart = JSON.parse(window.localStorage.getItem('cart'))
+      this.setState({
+        cart: guestCart.items
+      })
+    }
   }
 
   async handleDelete(event) {
@@ -24,9 +34,13 @@ class Cart extends React.Component {
     await this.props.setCart(this.props.user.id);
   }
 
-
   render() {
-    const cart = this.props.cart;
+    let cart
+    if (this.props.user.username){
+      cart = this.props.cart
+    } else {
+      cart = this.state.cart
+    }
     let orderTotal = 0;
     if (!cart.includes(undefined)) {
       orderTotal = cart.reduce((total, item) => {

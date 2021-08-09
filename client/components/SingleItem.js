@@ -27,32 +27,30 @@ export class SingleItem extends React.Component {
       itemId: this.props.item.id,
       user: this.props.user,
     }
-    if(this.props.user.name) {
+    if(this.props.user.username) {
       event.preventDefault();
       this.props.addToCart(cartItem);
     } else {
+      const guestCartItem = {
+        quantity: cartItem.quantity,
+        purchasePrice: cartItem.purchasePrice,
+        imageUrl: this.props.item.imageUrl,
+        id: this.props.item.id,
+        description: this.props.item.description,
+        name: this.props.item.name,
+        price: this.props.item.price
+      }
       event.preventDefault();
       let cart = JSON.parse(window.localStorage.getItem('cart'));
       let existingItems = cart.items;
-      existingItems.push(cartItem);
-      // console.log(existingItems)
-      // console.log(JSON.stringify(existingItems))
+      existingItems.push(guestCartItem);
       window.localStorage.setItem('cart', JSON.stringify({'items': existingItems}))
-      // window.localStorage.setItem("cart", JSON.stringify(existingItems));
-
-
-      // existingItems = JSON.parse(existingItems)
       }
-      // existingItems.push(cartItem);
-      // console.log(existingItems)
-    // }
-
-
   }
 
   handleChange(evt) {
     this.setState({
-      [evt.target.name]: evt.target.value,
+      [evt.target.name]: parseInt(evt.target.value, 10),
     });
   }
 
