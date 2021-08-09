@@ -5,12 +5,6 @@ import { updateOrder } from '../store/order';
 export class OrderConfirmation extends React.Component {
   constructor(props) {
     super(props);
-    this.state = {
-      name: '',
-      price: '',
-      imageUrl: '',
-      quantity: '',
-    };
   }
   componentDidMount() {
     this.props.updateOrder(this.props.user.id);
