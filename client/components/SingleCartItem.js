@@ -13,7 +13,7 @@ export class SingleCartItem extends React.Component {
     };
     this.handleChange = this.handleChange.bind(this);
   }
-  
+
   async handleChange(evt) {
     await this.setState({
       [evt.target.name]: evt.target.value,
@@ -50,7 +50,7 @@ export class SingleCartItem extends React.Component {
             value={this.state.quantity}
           />
         </div>
-        <h3>{`Subtotal: $${price * this.state.quantity}`}</h3>
+        <h3>{`Subtotal: $${(price * this.state.quantity).toFixed(2)}`}</h3>
       </div>
     );
   }

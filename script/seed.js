@@ -98,7 +98,7 @@ const generateImage = (item, caller) => {
   }
   band = band.join(' ');
   product = product.join(' ');
-  return caller === 'images' ? bandImages[band] : categoryIds[product];
+  return caller === 'image' ? bandImages[band] : categoryIds[product];
 };
 
 const generatePrice = () => {
@@ -137,7 +137,7 @@ async function seed() {
           description: generateDescription() + ' ' + item,
           price: generatePrice(),
           imageUrl: generateImage(item, 'image'),
-          categoryId: generateImage(item, 'category'),
+          // categoryId: generateImage(item, 'category'),
         });
       })
     );
