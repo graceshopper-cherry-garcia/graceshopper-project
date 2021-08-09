@@ -35,8 +35,8 @@ export class SingleCartItem extends React.Component {
         }
         return item
       })
-
-      console.log('singleItem', guestCart)
+      window.localStorage.setItem('cart', JSON.stringify({'items': guestCart}))
+      this.props.updateQuantity();
     }
   }
 
@@ -79,7 +79,6 @@ const mapState = (state) => {
 const mapDispatch = (dispatch) => {
   return {
     updateItem: (orderItem) => dispatch(updateOrderItem(orderItem)),
-
     setCart: (userId) => dispatch(setCart(userId)),
   };
 };
