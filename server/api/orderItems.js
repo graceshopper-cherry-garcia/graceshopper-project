@@ -41,6 +41,23 @@ router.post('/', async (req, res, next) => {
   }
 });
 
+router.post('/guest', async (req, res, next) => {
+  try {
+    const order = await Order.findByPk(req.body.orderId);
+    const orderItemInput = {
+      quantity: req.body.quantity,
+      purchasePrice: req.body.purchasePrice,
+      itemId: req.body.itemId,
+      orderId: order.id,
+    };
+    const orderItem = await Order_Item.create(orderItemInput);
+    res.send(orderItem);
+  } catch (error) {
+    next(error)
+  }
+})
+
+
 // PUT /api/orderItems update an orderItem
 
 router.put('/', async (req, res, next) => {
