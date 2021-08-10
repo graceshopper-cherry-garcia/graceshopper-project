@@ -23,7 +23,55 @@ export class SingleItem extends React.Component {
     this.props.fetchItem(this.props.match.params.id);
   }
 
+  async guestSubmit(cartItem) {
+    const guestCartItem = {
+      quantity: cartItem.quantity,
+      purchasePrice: cartItem.purchasePrice,
+      imageUrl: this.props.item.imageUrl,
+      id: this.props.item.id,
+      description: this.props.item.description,
+      name: this.props.item.name,
+      price: this.props.item.price,
+    };
+    let cart = JSON.parse(window.localStorage.getItem("cart"));
+    let existingItems = cart.items;
+    let found;
+    found = existingItems.find((item) => {
+      return item.id === this.props.item.id;
+    });
+    if (found) {
+      alert("This item aleady exists in your cart!");
+    } else {
+      existingItems.push(guestCartItem);
+      window.localStorage.setItem(
+        "cart",
+        JSON.stringify({ items: existingItems })
+      );
+      this.setState({
+        addedToCart: true,
+      });
+    }
+  }
+
+  async userSubmit(cartItem) {
+    await this.props.getOrder(this.props.user.id);
+    await this.props.getOrderItems(this.props.order.id);
+    let found;
+    found = this.props.orderItems.find((item) => {
+      return item.itemId === this.props.item.id;
+    });
+    if (found) {
+      alert("This item aleady exists in your cart!");
+    } else {
+      this.props.addToCart(cartItem);
+      this.setState({
+        addedToCart: true,
+      });
+    }
+  }
+
   async handleSubmit(event) {
+    event.preventDefault();
     const cartItem = {
       quantity: this.state.quantity,
       purchasePrice: this.props.item.price,
@@ -31,40 +79,10 @@ export class SingleItem extends React.Component {
       user: this.props.user,
     };
     if (this.props.user.username) {
-      event.preventDefault();
-      await this.props.getOrder(this.props.user.id);
-      await this.props.getOrderItems(this.props.order.id);
-      let found;
-      found = this.props.orderItems.find((item) => {
-        return item.itemId === this.props.item.id;
-      });
-      if (found) {
-        alert("This item aleady exists in your cart!");
-      } else {
-        this.props.addToCart(cartItem);
-      }
+      this.userSubmit(cartItem)
     } else {
-      const guestCartItem = {
-        quantity: cartItem.quantity,
-        purchasePrice: cartItem.purchasePrice,
-        imageUrl: this.props.item.imageUrl,
-        id: this.props.item.id,
-        description: this.props.item.description,
-        name: this.props.item.name,
-        price: this.props.item.price,
-      };
-      event.preventDefault();
-      let cart = JSON.parse(window.localStorage.getItem("cart"));
-      let existingItems = cart.items;
-      existingItems.push(guestCartItem);
-      window.localStorage.setItem(
-        "cart",
-        JSON.stringify({ items: existingItems })
-      );
+      this.guestSubmit(cartItem)
     }
-    this.setState({
-      addedToCart: true,
-    });
   }
 
   handleChange(evt) {
