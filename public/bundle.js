@@ -2994,7 +2994,8 @@ class SingleCartItem extends react__WEBPACK_IMPORTED_MODULE_0__.Component {
       onChange: this.handleChange,
       name: "quantity",
       type: "number",
-      value: this.state.quantity
+      value: this.state.quantity,
+      min: "0"
     })), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("h3", null, `Subtotal: $${(price * this.state.quantity).toFixed(2)}`));
   }
 
@@ -3130,8 +3131,9 @@ class SingleItem extends react__WEBPACK_IMPORTED_MODULE_0__.Component {
         value: num + 1
       }, num + 1);
     })), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("button", {
-      type: "submit"
-    }, "Add To Cart"))), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("p", null, item.description)), this.props.user.isAdmin && /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("div", {
+      type: "submit",
+      onClick: this.notify
+    }, "Add To Cart"), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement(ToastContainer, null))), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("p", null, item.description)), this.props.user.isAdmin && /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("div", {
       className: "admin-buttons"
     }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement(react_router_dom__WEBPACK_IMPORTED_MODULE_4__.Link, {
       to: `/editItem/${this.props.item.id}`

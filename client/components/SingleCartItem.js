@@ -4,6 +4,7 @@ import { deleteCartItemThunk } from '../store/cartOrderItems';
 import { connect } from 'react-redux';
 import { setCart } from '../store/cart';
 
+
 export class SingleCartItem extends React.Component {
   constructor(props) {
     super(props);
@@ -60,6 +61,7 @@ export class SingleCartItem extends React.Component {
             name="quantity"
             type="number"
             value={this.state.quantity}
+            min='0'
           />
         </div>
         <h3>{`Subtotal: $${(price * this.state.quantity).toFixed(2)}`}</h3>

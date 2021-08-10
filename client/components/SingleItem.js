@@ -66,6 +66,7 @@ export class SingleItem extends React.Component {
     return array;
   }
 
+
   render() {
     const item = this.props.item;
 
@@ -90,7 +91,8 @@ export class SingleItem extends React.Component {
                   );
                 })}
               </select>
-              <button type="submit">Add To Cart</button>
+              <button type="submit" onClick={this.notify}>Add To Cart</button>
+              <ToastContainer />
             </form>
           </span>
 
