@@ -32,7 +32,6 @@ export const _deleteOrderItem = (orderItem) => {
 export const addOrderItem = (orderItem) => {
   return async (dispatch) => {
     try {
-      // console.log('inside the thunk ');
       const { data } = await axios.post('/api/orderItems', orderItem);
       dispatch(_addOrderItem(data));
     } catch (e) {
@@ -44,7 +43,6 @@ export const addOrderItem = (orderItem) => {
 export const updateOrderItem = (orderItem) => {
   return async (dispatch) => {
     try {
-      // console.log('inside the thunk ');
       const { data } = await axios.put('/api/orderItems', orderItem);
       dispatch(_updateOrderItem(data));
     } catch (e) {

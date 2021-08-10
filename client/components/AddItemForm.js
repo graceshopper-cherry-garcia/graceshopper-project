@@ -28,7 +28,6 @@ export class AddItemForm extends React.Component {
   }
 
   render() {
-    console.log(this.props);
     const { handleChange, handleSubmit } = this;
     return (
       <div className="form_container" onSubmit={handleSubmit}>

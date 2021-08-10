@@ -32,15 +32,10 @@ export const setCart = (userId) => {
   return async (dispatch) => {
     await store.dispatch(fetchOrder(userId));
     const order = store.getState().order;
-    console.log('order is ', order);
     await store.dispatch(fetchOrderItems(order.id));
     const orderItems = store.getState().orderItems;
-    console.log('orderItems is ', orderItems);
     const items = order.items;
-    console.log('items ', items);
     const cart = concatItems(items, orderItems);
-    console.log(cart);
-
     dispatch(gotCart(cart));
   };
   // return {

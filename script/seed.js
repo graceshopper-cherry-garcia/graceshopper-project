@@ -170,36 +170,12 @@ async function seed() {
       })
     );
 
-    //Create Order
-    // await Order.create({
-    //   userId: 1,
-    // });
 
-    // await Order_Item.create({
-    //   quantity: 4,
-    //   purchasePrice: 1234,
-    //   itemId: 2,
-    //   orderId: 1,
-    // });
-    // console.log(Order.prototype);
 
-    //Create Orders
-    // const orders = await Promise.all([
-    //   Order.create({
-    //     quantity: 3,
-    //   }),
-    //   Order.create({
-    //     quantity: 4,
-    //   }),
-    //   Order.create({
-    //     quantity: 5,
-    //   }),
-    // ]);
 
     //send information
     console.log(`seeded ${users.length} users`);
     console.log(`seeded ${items.length} items`);
-    // console.log(`seeded ${orders.length} orders`);
     console.log(`seeded successfully`);
     return {
       users: {

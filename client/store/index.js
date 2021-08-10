@@ -9,6 +9,7 @@ import orderItem from './orderItem';
 import order from './order';
 import orderItems from './cartOrderItems';
 import cart from './cart';
+import checkedoutCart from './checkedoutCart';
 
 const reducer = combineReducers({
   auth,
@@ -18,6 +19,7 @@ const reducer = combineReducers({
   order,
   orderItems,
   cart,
+  checkedoutCart
 });
 const middleware = composeWithDevTools(
   applyMiddleware(thunkMiddleware, createLogger({ collapsed: true }))

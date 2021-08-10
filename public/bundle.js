@@ -1906,8 +1906,7 @@ class Routes extends react__WEBPACK_IMPORTED_MODULE_0__.Component {
   render() {
     const {
       isLoggedIn
-    } = this.props; // console.log(this.props)
-
+    } = this.props;
     return /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("div", null, isLoggedIn ? /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement(react_router_dom__WEBPACK_IMPORTED_MODULE_11__.Switch, null, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement(react_router_dom__WEBPACK_IMPORTED_MODULE_11__.Route, {
       exact: true,
       path: "/orderConfirmation",
@@ -2045,7 +2044,6 @@ class AddItemForm extends react__WEBPACK_IMPORTED_MODULE_0__.Component {
   }
 
   render() {
-    console.log(this.props);
     const {
       handleChange,
       handleSubmit
@@ -2410,8 +2408,10 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! react */ "./node_modules/react/index.js");
 /* harmony import */ var react_redux__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! react-redux */ "./node_modules/react-redux/es/index.js");
 /* harmony import */ var _store_cart__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../store/cart */ "./client/store/cart.js");
-/* harmony import */ var react_router_dom__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! react-router-dom */ "./node_modules/react-router-dom/esm/react-router-dom.js");
+/* harmony import */ var react_router_dom__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! react-router-dom */ "./node_modules/react-router-dom/esm/react-router-dom.js");
 /* harmony import */ var _OrderConfirmation__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./OrderConfirmation */ "./client/components/OrderConfirmation.js");
+/* harmony import */ var _store_checkedoutCart__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ../store/checkedoutCart */ "./client/store/checkedoutCart.js");
+
 
 
 
@@ -2424,11 +2424,11 @@ class Checkout extends react__WEBPACK_IMPORTED_MODULE_0__.Component {
     this.state = {
       cart: []
     };
-    this.updateCart = this.updateCart.bind(this);
+    this.updateCart = this.updateCart.bind(this); // this.onClick = this.onClick.bind(this);
   }
 
   updateCart() {
-    let guestCart = JSON.parse(window.localStorage.getItem('cart'));
+    let guestCart = JSON.parse(window.localStorage.getItem("cart"));
     this.setState({
       cart: guestCart.items
     });
@@ -2440,6 +2440,18 @@ class Checkout extends react__WEBPACK_IMPORTED_MODULE_0__.Component {
     } else {
       this.updateCart();
     }
+  }
+
+  componentWillUnmount() {
+    let cart;
+
+    if (this.props.user.username) {
+      cart = this.props.cart;
+    } else {
+      cart = this.state.cart;
+    }
+
+    this.props.setCheckedoutCart(cart);
   }
 
   render() {
@@ -2465,17 +2477,11 @@ class Checkout extends react__WEBPACK_IMPORTED_MODULE_0__.Component {
       }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("h2", null, item.name), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("img", {
         width: "200px",
         src: item.imageUrl
-      }), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("div", null, `Item Price: $${(item.price / 100).toFixed(2)}`), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("div", null, "Quantity: ", item.quantity), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("div", null, "Item Subtotal: $", item.price / 100 * item.quantity));
-    }), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("h1", null, "Order Total: $", orderTotal.toFixed(2)), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement(react_router_dom__WEBPACK_IMPORTED_MODULE_4__.Link, {
-      to: {
-        pathname: '/orderConfirmation',
-        props: {
-          cart: cart,
-          orderTotal: orderTotal
-        }
-      }
+      }), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("div", null, `Item Price: $${(item.price / 100).toFixed(2)}`), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("div", null, "Quantity: ", item.quantity), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("div", null, "Item Subtotal: $", (item.price / 100 * item.quantity).toFixed(2)));
+    }), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("h1", null, "Order Total: $", orderTotal.toFixed(2)), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement(react_router_dom__WEBPACK_IMPORTED_MODULE_5__.Link, {
+      to: "/orderConfirmation"
     }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("button", {
-      type: "submit"
+      type: "button"
     }, "Submit Order")));
   }
 
@@ -2490,7 +2496,8 @@ const mapState = state => {
 
 const mapDispatch = dispatch => {
   return {
-    setCart: userId => dispatch((0,_store_cart__WEBPACK_IMPORTED_MODULE_2__.setCart)(userId))
+    setCart: userId => dispatch((0,_store_cart__WEBPACK_IMPORTED_MODULE_2__.setCart)(userId)),
+    setCheckedoutCart: cart => dispatch((0,_store_checkedoutCart__WEBPACK_IMPORTED_MODULE_4__.setCheckedoutCart)(cart))
   };
 };
 
@@ -2826,29 +2833,32 @@ class OrderConfirmation extends react__WEBPACK_IMPORTED_MODULE_0__.Component {
 
   componentDidMount() {
     if (this.props.user.username) {
-      console.log('if');
       this.props.updateOrder(this.props.user.id);
     } else {
-      console.log('else');
       window.localStorage.clear();
     }
   }
 
   render() {
-    console.log(' in order confirm');
-    console.log('storage is ', window.localStorage);
-    const cart = this.props.location.props.cart || [];
-    const totalPrice = this.props.location.props.orderTotal || '';
+    const cart = this.props.checkedoutCart || [];
+    let orderTotal = 0;
+
+    if (!cart.includes(undefined)) {
+      orderTotal = cart.reduce((total, item) => {
+        return total + item.price / 100 * item.quantity;
+      }, 0);
+    }
+
     return /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("div", {
       className: "confirmation-container"
     }, cart[0] && cart.map(item => {
       return /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("div", {
         key: item.id
-      }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("div", null, item.name), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("div", null, " ", (item.price / 100).toFixed(2), " "), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("div", null, item.quantity, " "), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("div", null, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("img", {
+      }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("div", null, item.name), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("div", null, " $", (item.price / 100).toFixed(2), " "), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("div", null, item.quantity, " "), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("div", null, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("img", {
         width: "200px",
         src: item.imageUrl
-      })), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("h3", null, "Subtotal: ", (item.price / 100 * item.quantity).toFixed(2)));
-    }), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("h1", null, "TOTAL PRICE: ", totalPrice));
+      })), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("h3", null, "Subtotal: $", (item.price / 100 * item.quantity).toFixed(2)));
+    }), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("h1", null, "TOTAL PRICE: $", orderTotal.toFixed(2)));
   }
 
 }
@@ -2856,7 +2866,8 @@ class OrderConfirmation extends react__WEBPACK_IMPORTED_MODULE_0__.Component {
 const mapState = state => {
   return {
     order: state.order,
-    user: state.auth
+    user: state.auth,
+    checkedoutCart: state.checkedoutCart
   };
 };
 
@@ -2891,10 +2902,15 @@ class ProductType extends react__WEBPACK_IMPORTED_MODULE_0__.Component {
   render() {
     const item = this.props.item;
     return /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("div", {
-      className: "image-container"
+      className: "outer-image-container"
     }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("img", {
-      width: "20%",
-      height: "20%",
+      src: item.categoryImage,
+      width: "300px",
+      height: "300px"
+    }), ' ', /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("img", {
+      className: "inner-image",
+      width: "30%",
+      height: "30%",
       src: item.imageUrl
     }));
   }
@@ -2948,7 +2964,6 @@ class SingleCartItem extends react__WEBPACK_IMPORTED_MODULE_0__.Component {
     } else {
       let cart = JSON.parse(window.localStorage.getItem('cart'));
       let existingItems = cart.items;
-      console.log('existingItems in singleCartItem', existingItems);
       const guestCart = existingItems.map(item => {
         if (item.id === this.props.item.id) {
           item.quantity = parseInt(this.state.quantity, 10);
@@ -3287,7 +3302,6 @@ const me = () => async dispatch => {
         authorization: token
       }
     });
-    console.log(res);
     return dispatch(setAuth(res.data));
   }
 };
@@ -3299,7 +3313,6 @@ const authenticate = (username, password, email, method) => async dispatch => {
       email
     });
     window.localStorage.setItem(TOKEN, res.data.token);
-    console.log(window.localStorage);
     dispatch(me());
   } catch (authError) {
     return dispatch(setAuth({
@@ -3378,14 +3391,10 @@ const setCart = userId => {
   return async dispatch => {
     await _index__WEBPACK_IMPORTED_MODULE_0__.default.dispatch((0,_store_order__WEBPACK_IMPORTED_MODULE_1__.fetchOrder)(userId));
     const order = _index__WEBPACK_IMPORTED_MODULE_0__.default.getState().order;
-    console.log('order is ', order);
     await _index__WEBPACK_IMPORTED_MODULE_0__.default.dispatch((0,_store_cartOrderItems__WEBPACK_IMPORTED_MODULE_2__.fetchOrderItems)(order.id));
     const orderItems = _index__WEBPACK_IMPORTED_MODULE_0__.default.getState().orderItems;
-    console.log('orderItems is ', orderItems);
     const items = order.items;
-    console.log('items ', items);
     const cart = concatItems(items, orderItems);
-    console.log(cart);
     dispatch(gotCart(cart));
   }; // return {
   //   type: SET_CART,
@@ -3456,6 +3465,39 @@ const fetchOrderItems = orderId => {
 
 /***/ }),
 
+/***/ "./client/store/checkedoutCart.js":
+/*!****************************************!*\
+  !*** ./client/store/checkedoutCart.js ***!
+  \****************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "setCheckedoutCart": () => (/* binding */ setCheckedoutCart),
+/* harmony export */   "default": () => (/* export default binding */ __WEBPACK_DEFAULT_EXPORT__)
+/* harmony export */ });
+//action const
+const SET_CHECKEDOUT_CART = "SET_CHECKEDOUT_CART";
+const setCheckedoutCart = cart => {
+  return {
+    type: SET_CHECKEDOUT_CART,
+    cart
+  };
+}; // Reducer
+
+/* harmony default export */ function __WEBPACK_DEFAULT_EXPORT__(state = [], action) {
+  switch (action.type) {
+    case SET_CHECKEDOUT_CART:
+      return action.cart;
+
+    default:
+      return state;
+  }
+}
+
+/***/ }),
+
 /***/ "./client/store/index.js":
 /*!*******************************!*\
   !*** ./client/store/index.js ***!
@@ -3470,7 +3512,7 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */   "logout": () => (/* reexport safe */ _auth__WEBPACK_IMPORTED_MODULE_3__.logout),
 /* harmony export */   "me": () => (/* reexport safe */ _auth__WEBPACK_IMPORTED_MODULE_3__.me)
 /* harmony export */ });
-/* harmony import */ var redux__WEBPACK_IMPORTED_MODULE_10__ = __webpack_require__(/*! redux */ "./node_modules/redux/es/redux.js");
+/* harmony import */ var redux__WEBPACK_IMPORTED_MODULE_11__ = __webpack_require__(/*! redux */ "./node_modules/redux/es/redux.js");
 /* harmony import */ var redux_logger__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! redux-logger */ "./node_modules/redux-logger/dist/redux-logger.js");
 /* harmony import */ var redux_logger__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(redux_logger__WEBPACK_IMPORTED_MODULE_0__);
 /* harmony import */ var redux_thunk__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! redux-thunk */ "./node_modules/redux-thunk/es/index.js");
@@ -3482,6 +3524,7 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _order__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! ./order */ "./client/store/order.js");
 /* harmony import */ var _cartOrderItems__WEBPACK_IMPORTED_MODULE_8__ = __webpack_require__(/*! ./cartOrderItems */ "./client/store/cartOrderItems.js");
 /* harmony import */ var _cart__WEBPACK_IMPORTED_MODULE_9__ = __webpack_require__(/*! ./cart */ "./client/store/cart.js");
+/* harmony import */ var _checkedoutCart__WEBPACK_IMPORTED_MODULE_10__ = __webpack_require__(/*! ./checkedoutCart */ "./client/store/checkedoutCart.js");
 
 
 
@@ -3493,19 +3536,21 @@ __webpack_require__.r(__webpack_exports__);
 
 
 
-const reducer = (0,redux__WEBPACK_IMPORTED_MODULE_10__.combineReducers)({
+
+const reducer = (0,redux__WEBPACK_IMPORTED_MODULE_11__.combineReducers)({
   auth: _auth__WEBPACK_IMPORTED_MODULE_3__.default,
   allItems: _allItems__WEBPACK_IMPORTED_MODULE_5__.default,
   singleItem: _singleItem__WEBPACK_IMPORTED_MODULE_4__.default,
   orderItem: _orderItem__WEBPACK_IMPORTED_MODULE_6__.default,
   order: _order__WEBPACK_IMPORTED_MODULE_7__.default,
   orderItems: _cartOrderItems__WEBPACK_IMPORTED_MODULE_8__.default,
-  cart: _cart__WEBPACK_IMPORTED_MODULE_9__.default
+  cart: _cart__WEBPACK_IMPORTED_MODULE_9__.default,
+  checkedoutCart: _checkedoutCart__WEBPACK_IMPORTED_MODULE_10__.default
 });
-const middleware = (0,redux_devtools_extension__WEBPACK_IMPORTED_MODULE_2__.composeWithDevTools)((0,redux__WEBPACK_IMPORTED_MODULE_10__.applyMiddleware)(redux_thunk__WEBPACK_IMPORTED_MODULE_1__.default, (0,redux_logger__WEBPACK_IMPORTED_MODULE_0__.createLogger)({
+const middleware = (0,redux_devtools_extension__WEBPACK_IMPORTED_MODULE_2__.composeWithDevTools)((0,redux__WEBPACK_IMPORTED_MODULE_11__.applyMiddleware)(redux_thunk__WEBPACK_IMPORTED_MODULE_1__.default, (0,redux_logger__WEBPACK_IMPORTED_MODULE_0__.createLogger)({
   collapsed: true
 })));
-const store = (0,redux__WEBPACK_IMPORTED_MODULE_10__.createStore)(reducer, middleware);
+const store = (0,redux__WEBPACK_IMPORTED_MODULE_11__.createStore)(reducer, middleware);
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (store);
 
 
@@ -3627,7 +3672,6 @@ const _deleteOrderItem = orderItem => {
 const addOrderItem = orderItem => {
   return async dispatch => {
     try {
-      // console.log('inside the thunk ');
       const {
         data
       } = await axios__WEBPACK_IMPORTED_MODULE_0___default().post('/api/orderItems', orderItem);
@@ -3640,7 +3684,6 @@ const addOrderItem = orderItem => {
 const updateOrderItem = orderItem => {
   return async dispatch => {
     try {
-      // console.log('inside the thunk ');
       const {
         data
       } = await axios__WEBPACK_IMPORTED_MODULE_0___default().put('/api/orderItems', orderItem);
@@ -36590,59 +36633,59 @@ function isPlainObject(obj) {
   return Object.getPrototypeOf(obj) === proto;
 }
 
+// Inlined / shortened version of `kindOf` from https://github.com/jonschlinkert/kind-of
+function miniKindOf(val) {
+  if (val === void 0) return 'undefined';
+  if (val === null) return 'null';
+  var type = typeof val;
+
+  switch (type) {
+    case 'boolean':
+    case 'string':
+    case 'number':
+    case 'symbol':
+    case 'function':
+      {
+        return type;
+      }
+  }
+
+  if (Array.isArray(val)) return 'array';
+  if (isDate(val)) return 'date';
+  if (isError(val)) return 'error';
+  var constructorName = ctorName(val);
+
+  switch (constructorName) {
+    case 'Symbol':
+    case 'Promise':
+    case 'WeakMap':
+    case 'WeakSet':
+    case 'Map':
+    case 'Set':
+      return constructorName;
+  } // other
+
+
+  return type.slice(8, -1).toLowerCase().replace(/\s/g, '');
+}
+
+function ctorName(val) {
+  return typeof val.constructor === 'function' ? val.constructor.name : null;
+}
+
+function isError(val) {
+  return val instanceof Error || typeof val.message === 'string' && val.constructor && typeof val.constructor.stackTraceLimit === 'number';
+}
+
+function isDate(val) {
+  if (val instanceof Date) return true;
+  return typeof val.toDateString === 'function' && typeof val.getDate === 'function' && typeof val.setDate === 'function';
+}
+
 function kindOf(val) {
   var typeOfVal = typeof val;
 
   if (true) {
-    // Inlined / shortened version of `kindOf` from https://github.com/jonschlinkert/kind-of
-    function miniKindOf(val) {
-      if (val === void 0) return 'undefined';
-      if (val === null) return 'null';
-      var type = typeof val;
-
-      switch (type) {
-        case 'boolean':
-        case 'string':
-        case 'number':
-        case 'symbol':
-        case 'function':
-          {
-            return type;
-          }
-      }
-
-      if (Array.isArray(val)) return 'array';
-      if (isDate(val)) return 'date';
-      if (isError(val)) return 'error';
-      var constructorName = ctorName(val);
-
-      switch (constructorName) {
-        case 'Symbol':
-        case 'Promise':
-        case 'WeakMap':
-        case 'WeakSet':
-        case 'Map':
-        case 'Set':
-          return constructorName;
-      } // other
-
-
-      return type.slice(8, -1).toLowerCase().replace(/\s/g, '');
-    }
-
-    function ctorName(val) {
-      return typeof val.constructor === 'function' ? val.constructor.name : null;
-    }
-
-    function isError(val) {
-      return val instanceof Error || typeof val.message === 'string' && val.constructor && typeof val.constructor.stackTraceLimit === 'number';
-    }
-
-    function isDate(val) {
-      if (val instanceof Date) return true;
-      return typeof val.toDateString === 'function' && typeof val.getDate === 'function' && typeof val.setDate === 'function';
-    }
-
     typeOfVal = miniKindOf(val);
   }
 
