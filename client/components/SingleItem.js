@@ -3,6 +3,10 @@ import { connect } from 'react-redux';
 import { Link } from 'react-router-dom';
 import { fetchItem, deleteItemThunk } from '../store/singleItem';
 import { addOrderItem } from '../store/orderItem';
+import order from '../store/order';
+import { fetchOrder } from '../store/order';
+import { fetchOrderItems } from '../store/cartOrderItems';
+
 
 
 export class SingleItem extends React.Component {
@@ -10,6 +14,7 @@ export class SingleItem extends React.Component {
     super(props);
     this.state = {
       quantity: 1,
+      addedToCart: false,
     };
     this.handleSubmit = this.handleSubmit.bind(this);
     this.handleChange = this.handleChange.bind(this);
@@ -20,7 +25,7 @@ export class SingleItem extends React.Component {
     this.props.fetchItem(this.props.match.params.id);
   }
 
-  handleSubmit(event) {
+  async handleSubmit(event) {
     const cartItem = {
       quantity: this.state.quantity,
       purchasePrice: this.props.item.price,
@@ -30,6 +35,8 @@ export class SingleItem extends React.Component {
     if(this.props.user.username) {
       event.preventDefault();
       this.props.addToCart(cartItem);
+      await this.props.getOrder(this.props.user.id);
+      await this.props.getOrderItems(this.props.order.id)
     } else {
       const guestCartItem = {
         quantity: cartItem.quantity,
@@ -46,6 +53,9 @@ export class SingleItem extends React.Component {
       existingItems.push(guestCartItem);
       window.localStorage.setItem('cart', JSON.stringify({'items': existingItems}))
       }
+      this.setState({
+        addedToCart: true,
+      });
   }
 
   handleChange(evt) {
@@ -68,6 +78,7 @@ export class SingleItem extends React.Component {
 
 
   render() {
+    console.log(this.props)
     const item = this.props.item;
 
     return (
@@ -107,6 +118,23 @@ export class SingleItem extends React.Component {
             </button>
           </div>
         )}
+              {this.state.addedToCart && (
+          <div
+            className="alert alert-secondary alert-dismissible fade show"
+            role="alert"
+          >
+            Added {this.state.quantity} {item.name}
+            {this.state.quantity > 1 ? "s" : ""} to cart!
+            <button
+              type="button"
+              className="close"
+              data-dismiss="alert"
+              aria-label="Close"
+            >
+              <span aria-hidden="true">&times;</span>
+            </button>
+          </div>
+        )}
       </div>
     );
   }
@@ -116,6 +144,8 @@ const mapState = (state) => {
   return {
     item: state.singleItem,
     user: state.auth,
+    order: state.order,
+    orderItems: state.orderItems,
   };
 };
 
@@ -123,7 +153,11 @@ const mapDispatch = (dispatch, { history }) => {
   return {
     fetchItem: (id) => dispatch(fetchItem(id)),
     deleteItem: (item) => dispatch(deleteItemThunk(item, history)),
-    addToCart: (orderItem) => dispatch(addOrderItem(orderItem))
+    addToCart: (orderItem) => dispatch(addOrderItem(orderItem)),
+    getOrder: (userId) => dispatch(fetchOrder(userId)),
+    getOrderItems: (orderId) => dispatch(fetchOrderItems(orderId))
+
+
   };
 };
 
