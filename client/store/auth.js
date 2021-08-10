@@ -24,7 +24,6 @@ export const me = () => async (dispatch) => {
         authorization: token,
       },
     });
-    console.log(res);
     return dispatch(setAuth(res.data));
   }
 };
@@ -38,7 +37,6 @@ export const authenticate =
         email,
       });
       window.localStorage.setItem(TOKEN, res.data.token);
-      console.log(window.localStorage);
       dispatch(me());
     } catch (authError) {
       return dispatch(setAuth({ error: authError }));

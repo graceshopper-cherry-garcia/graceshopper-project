@@ -1,8 +1,9 @@
-import React from 'react';
-import { connect } from 'react-redux';
-import { setCart } from '../store/cart';
-import { Link } from 'react-router-dom';
-import OrderConfirmation from './OrderConfirmation';
+import React from "react";
+import { connect } from "react-redux";
+import { setCart } from "../store/cart";
+import { Link } from "react-router-dom";
+import OrderConfirmation from "./OrderConfirmation";
+import { setCheckedoutCart } from "../store/checkedoutCart";
 
 class Checkout extends React.Component {
   constructor(props) {
@@ -11,14 +12,16 @@ class Checkout extends React.Component {
       cart: [],
     };
     this.updateCart = this.updateCart.bind(this);
+    // this.onClick = this.onClick.bind(this);
   }
 
   updateCart() {
-    let guestCart = JSON.parse(window.localStorage.getItem('cart'));
+    let guestCart = JSON.parse(window.localStorage.getItem("cart"));
     this.setState({
       cart: guestCart.items,
     });
   }
+
 
   async componentDidMount() {
     if (this.props.user.username) {
@@ -27,6 +30,17 @@ class Checkout extends React.Component {
       this.updateCart();
     }
   }
+
+  componentWillUnmount() {
+    let cart;
+    if (this.props.user.username) {
+      cart = this.props.cart;
+    } else {
+      cart = this.state.cart;
+    }
+    this.props.setCheckedoutCart(cart);
+  }
+
   render() {
     let cart;
     if (this.props.user.username) {
@@ -50,21 +64,18 @@ class Checkout extends React.Component {
                 <img width="200px" src={item.imageUrl} />
                 <div>{`Item Price: $${(item.price / 100).toFixed(2)}`}</div>
                 <div>Quantity: {item.quantity}</div>
-                <div>Item Subtotal: ${(item.price / 100) * item.quantity}</div>
+                <div>
+                  Item Subtotal: $
+                  {((item.price / 100) * item.quantity).toFixed(2)}
+                </div>
               </div>
             );
           })}
         <h1>Order Total: ${orderTotal.toFixed(2)}</h1>
-        <Link
-          to={{
-            pathname: '/orderConfirmation',
-            props: {
-              cart: cart,
-              orderTotal: orderTotal,
-            },
-          }}
-        >
-          <button type="submit">Submit Order</button>
+        <Link to="/orderConfirmation">
+          <button type="button">
+            Submit Order
+          </button>
         </Link>
       </div>
     );
@@ -81,6 +92,7 @@ const mapState = (state) => {
 const mapDispatch = (dispatch) => {
   return {
     setCart: (userId) => dispatch(setCart(userId)),
+    setCheckedoutCart: (cart) => dispatch(setCheckedoutCart(cart)),
   };
 };
 

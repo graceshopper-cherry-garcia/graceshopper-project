@@ -27,7 +27,6 @@ export class SingleCartItem extends React.Component {
     } else {
       let cart = JSON.parse(window.localStorage.getItem('cart'));
       let existingItems = cart.items;
-      console.log('existingItems in singleCartItem', existingItems);
       const guestCart = existingItems.map((item) => {
         if (item.id === this.props.item.id) {
           item.quantity = parseInt(this.state.quantity, 10);
