@@ -1,15 +1,27 @@
 body {
-  font-family: 'Montserrat', sans-serif;
-  font-family: 'Staatliches', 'cursive';
+  font-family: 'Montserrat', sans-serif !important;
+  font-family: 'Staatliches', 'cursive' !important;
+  background-color: aliceblue !important;
+
 }
 
 a {
-  text-decoration: none;
+  text-decoration: none !important;
+  color: black !important;
+}
+
+ul {
+  padding: 0 !important
+}
+
+li {
+  list-style-type: none;
 }
 
 label {
   display: block;
 }
+
 .logo {
   background-color: black;
   color: white;
@@ -20,11 +32,18 @@ nav {
   background-color: rgba(221, 164, 191, 0.74);
   width: 100%;
 }
+
+.app-container {
+  background-color: aliceblue;
+
+}
+
 .nav-container {
   display: flex;
   flex-direction: row;
   justify-content: space-between;
 }
+
 .holder {
   display: inline;
 }
@@ -47,12 +66,17 @@ form div {
   flex-direction: row;
   flex-wrap: wrap;
   justify-content: space-evenly;
+
 }
 .all-items-single-container {
   display: flex;
   justify-content: center;
-  width: 45%;
+  width: 25%;
   padding: 1em;
+  border-style: solid;
+  border-radius: 1px;
+  margin: 2px;
+  background-color: white;
 }
 .outer-image-container {
   position: relative;

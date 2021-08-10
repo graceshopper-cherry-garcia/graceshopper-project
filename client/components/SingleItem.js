@@ -91,8 +91,7 @@ export class SingleItem extends React.Component {
                   );
                 })}
               </select>
-              <button type="submit" onClick={this.notify}>Add To Cart</button>
-              <ToastContainer />
+              <button type="submit">Add To Cart</button>
             </form>
           </span>
 

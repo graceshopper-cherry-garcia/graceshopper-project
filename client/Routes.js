@@ -23,7 +23,7 @@ class Routes extends Component {
     const { isLoggedIn } = this.props;
 
     return (
-      <div>
+      <div className='routes-container'>
         {isLoggedIn ? (
           <Switch>
             <Route exact path="/orderConfirmation" component={OrderConfirmation} />
