@@ -6,10 +6,17 @@ export class ProductType extends React.Component {
   }
   render() {
     const item = this.props.item;
+    console.log(this.props);
     return (
       <div className="outer-image-container">
-        <img src="https://image.shutterstock.com/image-vector/blank-tshirt-template-vector-260nw-161243906.jpg" />{' '}
-        <img className="inner-image" width="20%" height="20%" src={item.imageUrl} />
+        <img src={item.categoryImage} width="300px" height="300px" />{' '}
+        {/* Must pass down background as props*/}
+        <img
+          className="inner-image"
+          width="30%"
+          height="30%"
+          src={item.imageUrl}
+        />
         {/* <div className="inner-image"> */}
       </div>
     );

@@ -61,21 +61,39 @@ const bandImages = {
   'Trash Mood':
     'https://i1.sndcdn.com/avatars-000399683646-nyl0co-t500x500.jpg',
 };
+const categoryImages = {
+  'coffee mug':
+    'https://previews.123rf.com/images/jemastock/jemastock1707/jemastock170715765/82760852-coffee-cup-cartoon-vector-illustration-graphic-design.jpg',
+  shirt:
+    'https://image.shutterstock.com/image-vector/blank-tshirt-template-vector-260nw-161243906.jpg',
+    hat: 'https://lh4.googleusercontent.com/proxy/85MFgFTHoAk_9yyTPU965BLL_fAGzEOdzMb0GWF8OR8fEwh6TvnexGKRKpK0eR5S9evbzejcinnPopvvJAoDGyyVXEkEhCWirh7Wxzg=s0-d',
+    jacket: 'https://i.pinimg.com/originals/f4/a0/47/f4a047febcb7cf3f27e0a81d10a8b3ab.jpg',
+    cup: "https://w7.pngwing.com/pngs/351/7/png-transparent-glass-water-drink-cup-water-glass-glass-blue-angle.png",
+    hoodie: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQAWvozYO1HNRnXQtv4oTbqzvmAoLvRnuXntA&usqp=CAU",
+    'videogame': "https://www.kindpng.com/picc/m/82-823746_transparent-video-game-clipart-game-boy-vector-png.png",
+    lamp: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRLJtrMIsEw6KE-uM77wNrzVOHIaVLtRco7pw&usqp=CAU",
+    poster: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRfOKKQFVf37WN4kf55pXi4d9mf6w3_Q62pumRC1jfTHrR3zpmdhA9cz5ZIpYazp8sPkKM&usqp=CAU",
+    'phone case': "https://ae01.alicdn.com/kf/HTB10Mt4HVXXXXbkXpXXq6xXFXXXT/Free-Shipping-The-Custom-Fashionable-Paint-Streaks-Vector-Phone-Case-For-Iphone-5-5s-Good-Gift.jpg",
+    guitar: "https://media.gettyimages.com/photos/closeup-of-guitar-against-colored-background-picture-id1162134287?s=612x612",
+    'fidget spinner': "https://st3.depositphotos.com/5970082/15188/v/600/depositphotos_151881280-stock-illustration-hand-spinner-toy-icon.jpg",
+    "pair of pants": "https://image.shutterstock.com/display_pic_with_logo/257299004/1973727446/stock-vector-short-pants-flat-sketch-technical-drawing-of-shorts-for-girls-short-pants-vector-1973727446.jpg",
+    'bottle opener': "https://vectorgraphicart.com/vector-images/dxf-ajotome62976a-cnc.png"
+};
 const categoryIds = {
-  'coffee mug': 1,
-  poster: 2,
-  shirt: 3,
-  hat: 4,
-  guitar: 5,
-  'phone case': 6,
-  'fidget spinner': 7,
-  jacket: 8,
-  'pair of pants': 9,
-  cup: 10,
-  'bottle opener': 11,
-  hoodie: 12,
-  videogame: 13,
-  lamp: 14,
+  'coffee mug': 'coffee mug',
+  poster: 'poster',
+  shirt: 'shirt',
+  hat: 'hat',
+  guitar: 'guitar',
+  'phone case': 'phone case',
+  'fidget spinner': 'fidget spinner',
+  jacket: 'jacket',
+  'pair of pants': 'pair of pants',
+  cup: 'cup',
+  'bottle opener': 'bottle opener',
+  hoodie: 'hoodie',
+  videogame: 'video game',
+  lamp: 'lamp',
 };
 
 for (let x = 0; x < bands.length; x++) {
@@ -88,17 +106,26 @@ for (let x = 0; x < bands.length; x++) {
 const generateImage = (item, caller) => {
   let band = [];
   let product = [];
+  let productImages = [];
   let productParts = item.split(' ');
   for (let word of productParts) {
     if (word[0] === word[0].toUpperCase()) {
       band.push(word);
     } else {
       product.push(word);
+      productImages.push(word);
     }
   }
   band = band.join(' ');
   product = product.join(' ');
-  return caller === 'image' ? bandImages[band] : categoryIds[product];
+
+  if (caller === 'image') {
+     return  bandImages[band];
+   } else if (caller === 'category') {
+     return categoryIds[product];
+   } else if (caller === 'categoryImage') {
+     return categoryImages[product]
+   }
 };
 
 const generatePrice = () => {
@@ -137,19 +164,12 @@ async function seed() {
           description: generateDescription() + ' ' + item,
           price: generatePrice(),
           imageUrl: generateImage(item, 'image'),
-          // categoryId: generateImage(item, 'category'),
+          category: generateImage(item, 'category'),
+          categoryImage: generateImage(item, 'categoryImage')
         });
       })
     );
 
-    // seed category table
-    const categoryNames = await Promise.all(
-      products.map((product) => {
-        return Category.create({
-          name: product,
-        });
-      })
-    );
     //Create Order
     // await Order.create({
     //   userId: 1,
