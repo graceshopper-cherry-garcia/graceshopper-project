@@ -66,6 +66,7 @@ export class SingleItem extends React.Component {
     return array;
   }
 
+
   render() {
     const item = this.props.item;
 
