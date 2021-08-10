@@ -1,3 +1,4 @@
+import axios from 'axios'
 import React from "react";
 import { connect } from "react-redux";
 import { setCart } from "../store/cart";
@@ -12,7 +13,6 @@ class Checkout extends React.Component {
       cart: [],
     };
     this.updateCart = this.updateCart.bind(this);
-    // this.onClick = this.onClick.bind(this);
   }
 
   updateCart() {
@@ -31,12 +31,20 @@ class Checkout extends React.Component {
     }
   }
 
-  componentWillUnmount() {
+  async componentWillUnmount() {
     let cart;
     if (this.props.user.username) {
       cart = this.props.cart;
     } else {
       cart = this.state.cart;
+      const {data: order} = await axios.post('/api/orders/guest')
+      await Promise.all(cart.map((item) => {
+        return axios.post('/api/orderItems/guest', {orderId: order.id,
+          quantity: item.quantity,
+          purchasePrice: item.purchasePrice,
+          itemId: item.id
+        })
+      }))
     }
     this.props.setCheckedoutCart(cart);
   }

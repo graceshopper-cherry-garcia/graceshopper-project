@@ -38,6 +38,17 @@ router.put('/:userId', async (req, res, next) => {
   }
 })
 
+router.post('/guest', async (req, res, next) => {
+  try {
+    const order = await Order.create({
+      isCompleted: true
+    })
+    res.send(order);
+  } catch (error) {
+    next(error)
+  }
+})
+
 router.post('/:userId', async (req, res, next) => {
   try {
     const order = await Order.create({
