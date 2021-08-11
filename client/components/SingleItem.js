@@ -3,7 +3,9 @@ import { connect } from 'react-redux';
 import { Link } from 'react-router-dom';
 import { fetchItem, deleteItemThunk } from '../store/singleItem';
 import { addOrderItem } from '../store/orderItem';
-
+import { fetchOrder } from '../store/order';
+import { fetchOrderItems } from '../store/cartOrderItems';
+import { setCount } from '../store/guestItemCount';
 
 export class SingleItem extends React.Component {
   constructor(props) {
@@ -20,17 +22,20 @@ export class SingleItem extends React.Component {
     this.props.fetchItem(this.props.match.params.id);
   }
 
-  handleSubmit(event) {
+  async handleSubmit(event) {
     const cartItem = {
       quantity: this.state.quantity,
       purchasePrice: this.props.item.price,
       itemId: this.props.item.id,
       user: this.props.user,
-    }
-    if(this.props.user.username) {
+    };
+    if (this.props.user.username) {
       event.preventDefault();
       this.props.addToCart(cartItem);
+      const order = await this.props.getOrder(this.props.user.id);
+      const orderItems = await this.props.getOrderItems(this.props.order.id);
     } else {
+      this.props.setCount(this.props.count + 1);
       const guestCartItem = {
         quantity: cartItem.quantity,
         purchasePrice: cartItem.purchasePrice,
@@ -38,14 +43,17 @@ export class SingleItem extends React.Component {
         id: this.props.item.id,
         description: this.props.item.description,
         name: this.props.item.name,
-        price: this.props.item.price
-      }
+        price: this.props.item.price,
+      };
       event.preventDefault();
       let cart = JSON.parse(window.localStorage.getItem('cart'));
       let existingItems = cart.items;
       existingItems.push(guestCartItem);
-      window.localStorage.setItem('cart', JSON.stringify({'items': existingItems}))
-      }
+      window.localStorage.setItem(
+        'cart',
+        JSON.stringify({ items: existingItems })
+      );
+    }
   }
 
   handleChange(evt) {
@@ -65,7 +73,6 @@ export class SingleItem extends React.Component {
     }
     return array;
   }
-
 
   render() {
     const item = this.props.item;
@@ -116,6 +123,8 @@ const mapState = (state) => {
   return {
     item: state.singleItem,
     user: state.auth,
+    order: state.order,
+    count: state.count,
   };
 };
 
@@ -123,7 +132,10 @@ const mapDispatch = (dispatch, { history }) => {
   return {
     fetchItem: (id) => dispatch(fetchItem(id)),
     deleteItem: (item) => dispatch(deleteItemThunk(item, history)),
-    addToCart: (orderItem) => dispatch(addOrderItem(orderItem))
+    addToCart: (orderItem) => dispatch(addOrderItem(orderItem)),
+    getOrder: (userId) => dispatch(fetchOrder(userId)),
+    getOrderItems: (orderId) => dispatch(fetchOrderItems(orderId)),
+    setCount: (count) => dispatch(setCount(count)),
   };
 };
 

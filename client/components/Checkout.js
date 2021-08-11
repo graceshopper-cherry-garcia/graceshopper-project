@@ -1,10 +1,10 @@
-import axios from 'axios'
-import React from "react";
-import { connect } from "react-redux";
-import { setCart } from "../store/cart";
-import { Link } from "react-router-dom";
-import OrderConfirmation from "./OrderConfirmation";
-import { setCheckedoutCart } from "../store/checkedoutCart";
+import axios from 'axios';
+import React from 'react';
+import { connect } from 'react-redux';
+import { setCart } from '../store/cart';
+import { Link } from 'react-router-dom';
+import OrderConfirmation from './OrderConfirmation';
+import { setCheckedoutCart } from '../store/checkedoutCart';
 
 class Checkout extends React.Component {
   constructor(props) {
@@ -16,12 +16,11 @@ class Checkout extends React.Component {
   }
 
   updateCart() {
-    let guestCart = JSON.parse(window.localStorage.getItem("cart"));
+    let guestCart = JSON.parse(window.localStorage.getItem('cart'));
     this.setState({
       cart: guestCart.items,
     });
   }
-
 
   async componentDidMount() {
     if (this.props.user.username) {
@@ -37,14 +36,17 @@ class Checkout extends React.Component {
       cart = this.props.cart;
     } else {
       cart = this.state.cart;
-      const {data: order} = await axios.post('/api/orders/guest')
-      await Promise.all(cart.map((item) => {
-        return axios.post('/api/orderItems/guest', {orderId: order.id,
-          quantity: item.quantity,
-          purchasePrice: item.purchasePrice,
-          itemId: item.id
+      const { data: order } = await axios.post('/api/orders/guest');
+      await Promise.all(
+        cart.map((item) => {
+          return axios.post('/api/orderItems/guest', {
+            orderId: order.id,
+            quantity: item.quantity,
+            purchasePrice: item.purchasePrice,
+            itemId: item.id,
+          });
         })
-      }))
+      );
     }
     this.props.setCheckedoutCart(cart);
   }
@@ -81,9 +83,7 @@ class Checkout extends React.Component {
           })}
         <h1>Order Total: ${orderTotal.toFixed(2)}</h1>
         <Link to="/orderConfirmation">
-          <button type="button">
-            Submit Order
-          </button>
+          <button type="button">Submit Order</button>
         </Link>
       </div>
     );

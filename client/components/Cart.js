@@ -8,6 +8,7 @@ import { deleteOrderItem } from '../store/orderItem';
 import { Route } from 'react-router-dom';
 import Checkout from './Checkout';
 import { setCart } from '../store/cart';
+import { setCount } from '../store/guestItemCount';
 
 class Cart extends React.Component {
   constructor(props) {
@@ -39,6 +40,7 @@ class Cart extends React.Component {
       await this.props.deleteItem(event.target.value);
       await this.props.setCart(this.props.user.id);
     } else {
+      this.props.setCount(this.props.count - 1);
       let cart = JSON.parse(window.localStorage.getItem('cart'));
       let existingItems = cart.items;
       const guestCart = existingItems.filter((item) => {
@@ -96,6 +98,7 @@ const mapState = (state) => {
     user: state.auth,
     orderItems: state.orderItems,
     cart: state.cart,
+    count: state.count,
   };
 };
 
@@ -105,6 +108,7 @@ const mapDispatch = (dispatch) => {
     getOrderItems: (orderId) => dispatch(fetchOrderItems(orderId)),
     deleteItem: (itemId) => dispatch(deleteOrderItem(itemId)),
     setCart: (userId) => dispatch(setCart(userId)),
+    setCount: (count) => dispatch(setCount(count)),
   };
 };
 

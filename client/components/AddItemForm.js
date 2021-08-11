@@ -21,9 +21,12 @@ export class AddItemForm extends React.Component {
     });
   }
 
-  handleSubmit(event) {
+  async handleSubmit(event) {
     event.preventDefault();
-    this.props.create({ ...this.state, price: parseInt(this.state.price*100,10) });
+    await this.props.create({
+      ...this.state,
+      price: parseInt(this.state.price * 100, 10),
+    });
     this.props.history.push('/home');
   }
 

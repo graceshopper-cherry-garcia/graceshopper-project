@@ -31,7 +31,6 @@ const Item = db.define('item', {
   },
   category: {
     type: Sequelize.STRING,
-    allowNull: false,
   },
   categoryImage: {
     type: Sequelize.TEXT,
