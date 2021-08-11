@@ -38,7 +38,8 @@ export class AddItemForm extends React.Component {
             name="name"
             value={this.state.name}
             onChange={handleChange}
-            placeholder={!this.state.name && 'required field'}
+            placeholder='required field'
+            required
           />
 
           <label htmlFor="image field">Image URL: </label>
@@ -50,11 +51,11 @@ export class AddItemForm extends React.Component {
           />
           <label htmlFor="price field">Price: </label>
           <input
-            type="text"
+            type="number"
             name="price"
             value={this.state.price}
             onChange={handleChange}
-            placeholder={this.state.price <= 0 && 'must be greater than 0'}
+            min='0'
           />
           <label htmlFor="description field">Description: </label>
           <input
@@ -76,10 +77,7 @@ export class AddItemForm extends React.Component {
   }
 }
 
-// eslint-disable-next-line no-unused-vars
-const mapState = (state) => {
-  return {};
-};
+
 
 const mapDispatch = (dispatch) => {
   return {
@@ -87,4 +85,4 @@ const mapDispatch = (dispatch) => {
   };
 };
 
-export default connect(mapState, mapDispatch)(AddItemForm);
+export default connect(null, mapDispatch)(AddItemForm);
