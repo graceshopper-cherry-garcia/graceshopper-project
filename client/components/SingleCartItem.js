@@ -1,9 +1,8 @@
-import React from 'react';
-import { updateOrderItem } from '../store/orderItem';
-import { deleteCartItemThunk } from '../store/cartOrderItems';
-import { connect } from 'react-redux';
-import { setCart } from '../store/cart';
-
+import React from "react";
+import { updateOrderItem } from "../store/orderItem";
+import { deleteCartItemThunk } from "../store/cartOrderItems";
+import { connect } from "react-redux";
+import { setCart } from "../store/cart";
 
 export class SingleCartItem extends React.Component {
   constructor(props) {
@@ -26,7 +25,7 @@ export class SingleCartItem extends React.Component {
       this.props.updateItem(updatedOrderItem);
       this.props.setCart(this.props.user.id);
     } else {
-      let cart = JSON.parse(window.localStorage.getItem('cart'));
+      let cart = JSON.parse(window.localStorage.getItem("cart"));
       let existingItems = cart.items;
       const guestCart = existingItems.map((item) => {
         if (item.id === this.props.item.id) {
@@ -34,7 +33,7 @@ export class SingleCartItem extends React.Component {
         }
         return item;
       });
-      window.localStorage.setItem('cart', JSON.stringify({ items: guestCart }));
+      window.localStorage.setItem("cart", JSON.stringify({ items: guestCart }));
       this.props.updateCart();
     }
   }
@@ -43,28 +42,32 @@ export class SingleCartItem extends React.Component {
     const item = this.props.item;
     const price = item.price / 100;
     return (
-      <div>
-        <button
-          value={this.props.item.id}
-          type="button"
-          onClick={(e) => this.props.handleDelete(e)}
-        >
-          Delete
-        </button>
-        <h2>{item.name}</h2>
-        <img width="200px" src={item.imageUrl} />
-        <div>{`Item Price: $${price}`}</div>
-        <div>
-          <label htmlFor="quantity">Quantity</label>
-          <input
-            onChange={this.handleChange}
-            name="quantity"
-            type="number"
-            value={this.state.quantity}
-            min='0'
-          />
+      <div className="cart-item-container">
+        <div className="cart-item">
+          <img width="200px" src={item.imageUrl} />
+          <div className="cart-right">
+            <h2>{item.name}</h2>
+            <div>{`Item Price: $${price}`}</div>
+            <label htmlFor="quantity">Quantity</label>
+            <input
+              onChange={this.handleChange}
+              name="quantity"
+              type="number"
+              value={this.state.quantity}
+              min="0"
+            />
+            <button
+              value={this.props.item.id}
+              type="button"
+              onClick={(e) => this.props.handleDelete(e)}
+            >
+              Delete
+            </button>
+            <h3>{`Subtotal: $${(price * this.state.quantity).toFixed(2)}`}</h3>
+          </div>
+
+          <div></div>
         </div>
-        <h3>{`Subtotal: $${(price * this.state.quantity).toFixed(2)}`}</h3>
       </div>
     );
   }
