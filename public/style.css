@@ -172,19 +172,60 @@ form div {
 }
 
 .checkout-item div {
-  margin-right: 3em
+  margin-right: 3em;
+  width: 8em;
 }
 
 .checkout-container {
   background-color: white;
   border-style: solid;
   border-radius: 1px;
-  width: 50%;
+  width: 60%;
   margin: auto
 }
 
 .checkout-container button {
   margin: 2px 40%
 }
+
+
+/* Confirmation */
+
+
+.confirmation-item {
+  display: inline-flex;
+  margin: 10px 3px;
+
+}
+
+.confirmation-item div {
+  margin-right: 3em;
+  width: 8em;
+}
+
+.confirmation-container {
+  display: block;
+  background-color: white;
+  border-style: solid;
+  border-radius: 1px;
+  width: 60%;
+  margin: auto
+}
+
+/* Single Item */
+
+.single-item-container {
+  background-color: white;
+  border-style: solid;
+  border-radius: 1px;
+  width: 30%;
+  margin: 2em auto;
+}
+
+.single-item-content {
+  text-align: center;
+}
+
+
 
 

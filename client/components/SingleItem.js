@@ -115,10 +115,7 @@ export class SingleItem extends React.Component {
             >
               Added {this.state.quantity} {item.name}
               {this.state.quantity > 1 ? "s" : ""} to{" "}
-              <a href="/cart" className="alert-link">
-                cart
-              </a>
-              !
+              <Link to='/cart'>cart</Link>!
               <button
                 id="close-alert"
                 type="button"
@@ -131,6 +128,7 @@ export class SingleItem extends React.Component {
             </div>
           </div>
         )}
+        <div className='single-item-content'>
         <img width="200px" src={item.imageUrl} />
         <div className="single-item-info">
           <h1>{item.name}</h1>
@@ -153,9 +151,12 @@ export class SingleItem extends React.Component {
               <button type="submit">Add To Cart</button>
             </form>
           </span>
-
           <p>{item.description}</p>
         </div>
+
+        </div>
+
+
         {this.props.user.isAdmin && (
           <div className="admin-buttons">
             <Link to={`/editItem/${this.props.item.id}`}>

@@ -75,7 +75,6 @@ class Checkout extends React.Component {
                   <div>{`Item Price: $${(item.price / 100).toFixed(2)}`}</div>
                   <div>Quantity: {item.quantity}</div>
 
-
                   <div>
                     Item Subtotal: $
                     {((item.price / 100) * item.quantity).toFixed(2)}

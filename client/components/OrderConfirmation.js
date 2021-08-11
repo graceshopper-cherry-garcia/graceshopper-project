@@ -1,6 +1,8 @@
-import React from 'react';
-import { connect } from 'react-redux';
-import { updateOrder } from '../store/order';
+import React from "react";
+import { connect } from "react-redux";
+import { updateOrder } from "../store/order";
+import { Link } from "react-router-dom";
+
 
 export class OrderConfirmation extends React.Component {
   constructor(props) {
@@ -23,24 +25,32 @@ export class OrderConfirmation extends React.Component {
     }
     return (
       <div className="confirmation-container">
+        {this.props.user.username ? (
+          <h3>{`Thanks for your order, ${this.props.user.username}`}</h3>
+        ) : (
+          <h3>Thanks for your order!</h3>
+        )}
         {cart[0] &&
           cart.map((item) => {
-
             return (
-              <div key={item.id}>
-                <div>{item.name}</div>
-                <div> ${(item.price / 100).toFixed(2)} </div>
-                <div>{item.quantity} </div>
-                <div>
-                  <img width="200px" src={item.imageUrl} />
+              <div key={item.id} className="confirmation-item-container">
+                <div className="confirmation-item">
+                  <div>Item: {item.name}</div>
+                  <div>{`Item Price: $${(item.price / 100).toFixed(2)}`}</div>
+                  <div>Quantity: {item.quantity}</div>
+
+                  <div>
+                    Item Subtotal: $
+                    {((item.price / 100) * item.quantity).toFixed(2)}
+                  </div>
                 </div>
-                <h3>
-                  Subtotal: ${((item.price / 100) * item.quantity).toFixed(2)}
-                </h3>
               </div>
             );
           })}
-        <h1>TOTAL PRICE: ${orderTotal.toFixed(2)}</h1>
+        <h1>Order Total: ${orderTotal.toFixed(2)}</h1>
+        <Link to='/home' >
+          <h3>Continue Shopping!</h3>
+        </Link>
       </div>
     );
   }
@@ -50,7 +60,7 @@ const mapState = (state) => {
   return {
     order: state.order,
     user: state.auth,
-    checkedoutCart: state.checkedoutCart
+    checkedoutCart: state.checkedoutCart,
   };
 };
 
