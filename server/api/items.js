@@ -3,7 +3,7 @@ const {
   models: { Item },
 } = require('../db');
 const { requireToken, isAdmin } = require('./gatekeepingMiddleware');
-
+//comment
 // GET /api/items returns all items
 router.get('/', async (req, res, next) => {
   try {
