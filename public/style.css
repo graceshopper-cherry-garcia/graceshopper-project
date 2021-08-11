@@ -18,6 +18,16 @@ li {
   list-style-type: none;
 }
 
+.alert-container {
+  position: relative;
+}
+
+#close-alert {
+  position: absolute;
+  top: 0px;
+  right: 0px
+}
+
 label {
   display: block;
 }
@@ -94,3 +104,128 @@ form div {
 .add-to-cart {
   display: inline-flex;
 }
+
+/* Cart Item */
+
+.cart-item {
+  display: inline-flex;
+  border-style: solid;
+  border-radius: 1px;
+  width: 80%;
+  margin-left: 1em
+}
+
+.cart-right input {
+  width: 3em;
+}
+
+.cart-item button {
+  height: 2em;
+}
+
+.cart-item img {
+  margin-left: 2em;
+}
+
+.cart-right {
+  margin: auto
+}
+
+/* Cart */
+
+.your-cart {
+  margin-left: 1em;
+}
+
+.cart-container {
+  display: inline-flex;
+  width: 100%;
+
+}
+
+.cart-right-side {
+  /* display: inline-flex; */
+  width: 35%
+}
+
+.cart-right-side button {
+  height: 3em;
+  width: 18em;
+}
+
+.cart-left-side {
+  width: 65%
+}
+
+.floating-total {
+  position: fixed;
+  top: 7em;
+  margin: auto
+}
+
+/* Checkout */
+
+.checkout-item {
+  display: inline-flex;
+  margin: 10px 3px;
+
+}
+
+.checkout-item div {
+  margin-right: 3em;
+  width: 8em;
+}
+
+.checkout-container {
+  background-color: white;
+  border-style: solid;
+  border-radius: 1px;
+  width: 60%;
+  margin: auto
+}
+
+.checkout-container button {
+  margin: 2px 40%
+}
+
+
+/* Confirmation */
+
+
+.confirmation-item {
+  display: inline-flex;
+  margin: 10px 3px;
+
+}
+
+.confirmation-item div {
+  margin-right: 3em;
+  width: 8em;
+}
+
+.confirmation-container {
+  display: block;
+  background-color: white;
+  border-style: solid;
+  border-radius: 1px;
+  width: 60%;
+  margin: auto
+}
+
+/* Single Item */
+
+.single-item-container {
+  background-color: white;
+  border-style: solid;
+  border-radius: 1px;
+  width: 30%;
+  margin: 2em auto;
+}
+
+.single-item-content {
+  text-align: center;
+}
+
+
+
+

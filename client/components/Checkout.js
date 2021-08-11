@@ -1,4 +1,4 @@
-import axios from 'axios'
+import axios from "axios";
 import React from "react";
 import { connect } from "react-redux";
 import { setCart } from "../store/cart";
@@ -22,7 +22,6 @@ class Checkout extends React.Component {
     });
   }
 
-
   async componentDidMount() {
     if (this.props.user.username) {
       await this.props.setCart(this.props.user.id);
@@ -37,14 +36,17 @@ class Checkout extends React.Component {
       cart = this.props.cart;
     } else {
       cart = this.state.cart;
-      const {data: order} = await axios.post('/api/orders/guest')
-      await Promise.all(cart.map((item) => {
-        return axios.post('/api/orderItems/guest', {orderId: order.id,
-          quantity: item.quantity,
-          purchasePrice: item.purchasePrice,
-          itemId: item.id
+      const { data: order } = await axios.post("/api/orders/guest");
+      await Promise.all(
+        cart.map((item) => {
+          return axios.post("/api/orderItems/guest", {
+            orderId: order.id,
+            quantity: item.quantity,
+            purchasePrice: item.purchasePrice,
+            itemId: item.id,
+          });
         })
-      }))
+      );
     }
     this.props.setCheckedoutCart(cart);
   }
@@ -63,27 +65,27 @@ class Checkout extends React.Component {
       }, 0);
     }
     return (
-      <div>
+      <div className="checkout-container">
         {cart[0] &&
           cart.map((item) => {
             return (
-              <div key={item.id}>
-                <h2>{item.name}</h2>
-                <img width="200px" src={item.imageUrl} />
-                <div>{`Item Price: $${(item.price / 100).toFixed(2)}`}</div>
-                <div>Quantity: {item.quantity}</div>
-                <div>
-                  Item Subtotal: $
-                  {((item.price / 100) * item.quantity).toFixed(2)}
+              <div key={item.id} className="checkout-item-container">
+                <div className="checkout-item">
+                  <div>Item: {item.name}</div>
+                  <div>{`Item Price: $${(item.price / 100).toFixed(2)}`}</div>
+                  <div>Quantity: {item.quantity}</div>
+
+                  <div>
+                    Item Subtotal: $
+                    {((item.price / 100) * item.quantity).toFixed(2)}
+                  </div>
                 </div>
               </div>
             );
           })}
         <h1>Order Total: ${orderTotal.toFixed(2)}</h1>
         <Link to="/orderConfirmation">
-          <button type="button">
-            Submit Order
-          </button>
+          <button type="button">Submit Order</button>
         </Link>
       </div>
     );

@@ -79,9 +79,9 @@ export class SingleItem extends React.Component {
       user: this.props.user,
     };
     if (this.props.user.username) {
-      this.userSubmit(cartItem)
+      this.userSubmit(cartItem);
     } else {
-      this.guestSubmit(cartItem)
+      this.guestSubmit(cartItem);
     }
   }
 
@@ -107,6 +107,28 @@ export class SingleItem extends React.Component {
     const item = this.props.item;
     return (
       <div className="single-item-container">
+        {this.state.addedToCart && (
+          <div className="alert-container">
+            <div
+              className="alert alert-secondary alert-dismissible fade show"
+              role="alert"
+            >
+              Added {this.state.quantity} {item.name}
+              {this.state.quantity > 1 ? "s" : ""} to{" "}
+              <Link to='/cart'>cart</Link>!
+              <button
+                id="close-alert"
+                type="button"
+                className="close"
+                data-dismiss="alert"
+                aria-label="Close"
+              >
+                <span aria-hidden="true">&times;</span>
+              </button>
+            </div>
+          </div>
+        )}
+        <div className='single-item-content'>
         <img width="200px" src={item.imageUrl} />
         <div className="single-item-info">
           <h1>{item.name}</h1>
@@ -129,9 +151,12 @@ export class SingleItem extends React.Component {
               <button type="submit">Add To Cart</button>
             </form>
           </span>
-
           <p>{item.description}</p>
         </div>
+
+        </div>
+
+
         {this.props.user.isAdmin && (
           <div className="admin-buttons">
             <Link to={`/editItem/${this.props.item.id}`}>
@@ -139,23 +164,6 @@ export class SingleItem extends React.Component {
             </Link>
             <button onClick={() => this.props.deleteItem(item)} type="button">
               Delete
-            </button>
-          </div>
-        )}
-        {this.state.addedToCart && (
-          <div
-            className="alert alert-secondary alert-dismissible fade show"
-            role="alert"
-          >
-            Added {this.state.quantity} {item.name}
-            {this.state.quantity > 1 ? "s" : ""} to cart!
-            <button
-              type="button"
-              className="close"
-              data-dismiss="alert"
-              aria-label="Close"
-            >
-              <span aria-hidden="true">&times;</span>
             </button>
           </div>
         )}
