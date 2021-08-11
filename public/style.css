@@ -2,7 +2,6 @@ body {
   font-family: 'Montserrat', sans-serif !important;
   font-family: 'Staatliches', 'cursive' !important;
   background-color: aliceblue !important;
-
 }
 
 a {
@@ -11,7 +10,7 @@ a {
 }
 
 ul {
-  padding: 0 !important
+  padding: 0 !important;
 }
 
 li {
@@ -45,7 +44,6 @@ nav {
 
 .app-container {
   background-color: aliceblue;
-
 }
 
 .nav-container {
@@ -76,7 +74,6 @@ form div {
   flex-direction: row;
   flex-wrap: wrap;
   justify-content: space-evenly;
-
 }
 .all-items-single-container {
   display: flex;
@@ -91,10 +88,55 @@ form div {
 .outer-image-container {
   position: relative;
 }
+
 .inner-image {
   position: absolute;
   top: 5em;
   left: 7em;
+  width: 30%;
+  height: 30%;
+}
+
+.additional-top-margin {
+  position: absolute;
+  top: 7.5em;
+  left: 6.5em;
+  /*  */
+}
+.video_game {
+  position: absolute;
+  top: 5.25em;
+  left: 6.5em;
+  width: 6em;
+  height: 7em;
+}
+.jacket {
+  position: absolute;
+  top: 7em;
+  left: 6.5em;
+  width: 6em;
+  height: 7em;
+}
+.fidget_spinner {
+  position: absolute;
+  top: 9.25em;
+  left: 8em;
+  width: 15%;
+  height: 15%;
+}
+.phone_case {
+  position: absolute;
+  top: 5em;
+  left: 6.5em;
+  width: 6em;
+  height: 11em;
+}
+.bottle_opener {
+  position: absolute;
+  top: 6em;
+  left: 8em;
+  width: 7em;
+  height: 7em;
 }
 .confirmation-container {
   display: flex;
